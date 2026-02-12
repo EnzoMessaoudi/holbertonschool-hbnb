@@ -1,0 +1,41 @@
+classDiagram
+
+class PresentationLayer {
+    Collect_request_user()
+    show_result()
+    send_request()
+}
+
+class Facade {
+    check_user_request()
+    call_right_functions()
+}
+
+class BusinessLogicLayer {
+    check_request()
+    validate_request()
+}
+
+class PersistenceLayer {
+    write()
+    update()
+    delete()
+}
+
+PresentationLayer --> Facade
+Facade --> BusinessLogicLayer
+BusinessLogicLayer --> PersistenceLayer : Database operations
+
+note for PresentationLayer "This layer handles communication with the user:
+It's the interface of the application."
+
+note for BusinessLogicLayer "This layer is the core logic of the application:
+    It checks if a request can access to the database
+    and determines what actions should be taken."
+
+note for PersistenceLayer "This layer interact directly with the database:
+    After the request is confirmed, it will perform the necessary operations
+    to read, write or update the database."
+
+note for Facade "The facade is used to order the application:
+It call the right methods"
