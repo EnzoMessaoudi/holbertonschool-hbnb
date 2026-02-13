@@ -1,9 +1,9 @@
 # INTRODUCTION
-    In this Project, we will create an application similar to the Airbnb site. In this application, the user can see multiple places that he can rental and review. He can also create an account then post on the site the places he can rent and the aminity that are selled with it.
-    This document is used like a summary and permit to see the project in general. We can see each of our diagramms and theirs purpose in our project.
+In this Project, we will create an application similar to the Airbnb site. In this application, the user can see multiple places that he can rental and review. He can also create an account then post on the site the places he can rent and the aminity that are selled with it.
+This document is used like a summary and permit to see the project in general. We can see each of our diagramms and theirs purpose in our project.
 
 ### AUTHORS:
-        Enzo Messaoudi and Killian Le Boulzec
+Enzo Messaoudi and Killian Le Boulzec
 
 # DIAGRAMS
 ## High_Level_Diagram
