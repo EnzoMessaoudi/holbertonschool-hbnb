@@ -1,0 +1,52 @@
+classDiagram
+
+
+class User {
+  +string first_name
+  +string last_name
+  +string email
+  +string Password
+  +string Email
+  +string Id
+  +write_review()
+  +Create_acount()
+  +Update_account()
+  +delete_account()
+}
+
+class Places {
+  +string title
+  +string description
+  +float price
+  +float latitude
+  +float longitude
+  +add_amenity()
+  +remove_amenity()
+  +Delete_place()
+  +List_place()
+}
+
+class Review {
+  +string text
+  +int rating
+  +string Id
+  +update_text()
+  +update_rating()
+}
+
+class Amenity {
+  +string name
+  +string description
+  +string Id
+  +Create_amenity()
+  +Update_amenity()
+  +Delete_amenity()
+  +List_amenity()
+
+}
+
+
+User --> Places: The user can write/update information about the rentals 
+User --> Review: Allow the user to write reviews or update them
+Review --> Places
+Amenity --> Places: Allow the user to describe the places/items included in the rental
