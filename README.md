@@ -1,7 +1,7 @@
-## INTRODUCTION
+# INTRODUCTION
 
 
-
+# DIAGRAMS
 ## High_Level_Diagram
 ![link](png/High_level_diagram.png)
 
