@@ -1,20 +1,21 @@
 %%{ init : { "theme": "neutral" } }%%
 
 sequenceDiagram
+title USER REGISTRATION
 participant User
 participant API
 participant BusinessLogic
 participant Database
 
-User->>API: AddUser()
-API->>BusinessLogic: CheckRequest()
+User->>API: AddUser
+API->>BusinessLogic: CheckRequest
 
 alt Validation Failed
     BusinessLogic-->>API: Return Failure
-    API-->>User:ShowResult()
+    API-->>User: ShowResult
 else Validation success
     BusinessLogic->>Database: AddUser
     Database-->>BusinessLogic: UserCreated
     BusinessLogic-->>API: Return Response
-    API-->>User: show_result()
+    API-->>User: ShowResult
 end
