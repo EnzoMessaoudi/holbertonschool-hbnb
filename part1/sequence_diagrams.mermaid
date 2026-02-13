@@ -1,0 +1,20 @@
+sequenceDiagram
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: Collect_request_user()
+API->>BusinessLogic: check_request()
+
+
+alt Validation failed
+    BusinessLogic-->>API: Return Failure
+    API-->>User:show_result()
+else Validation success
+    BusinessLogic->>Database: validate_request
+    Database->>Database:write()
+    Database-->>BusinessLogic: Confirm save
+    BusinessLogic-->>API: Return Response
+    API-->>User: show_result()
+end
