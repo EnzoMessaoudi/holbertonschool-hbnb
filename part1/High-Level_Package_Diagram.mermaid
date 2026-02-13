@@ -1,54 +1,54 @@
 classDiagram
 
 class PresentationLayer {
-    user_request()
-    show_result()
+    userRequest()
+    showResult()
 }
 
-class user_facade {
-    add_user()
-    update_user()
-    delete_user()
+class userFacade {
+    addUser()
+    updateUser()
+    deleteUser()
 }
-class place_facade{
-    create_place()
-    update_place()
-    delete_place()
-    list_place()
+class placeFacade{
+    createPlace()
+    updatePlace()
+    deletePlace()
+    listPlace()
 }
-class review_facade{
-    add_review()
-    update_review()
-    delete_review()
-    list_review()
+class reviewFacade{
+    addReview()
+    updateReview()
+    deleteReview()
+    listReview()
 }
-class amenity_facade{
-    add_amenity()
-    update_amenity()
-    delete_amenity()
-    list_amenity()
+class amenityFacade{
+    addAmenity()
+    updateAmenity()
+    deleteAmenity()
+    listAmenity()
 }
 
 class BusinessLogicLayer {
-    check_request()
-    validate_request()
+    checkRequest()
+    validateRequest()
 }
 
 class PersistenceLayer {
-    read()
-    write()
-    update()
-    delete()
+    Read()
+    Write()
+    Update()
+    Delete()
 }
 
-PresentationLayer --> user_facade
-PresentationLayer --> place_facade
-PresentationLayer --> amenity_facade
-PresentationLayer --> review_facade
-user_facade --> BusinessLogicLayer
-place_facade --> BusinessLogicLayer
-amenity_facade --> BusinessLogicLayer
-review_facade --> BusinessLogicLayer
+PresentationLayer --> userFacade
+PresentationLayer --> placeFacade
+PresentationLayer --> amenityFacade
+PresentationLayer --> reviewFacade
+userFacade --> BusinessLogicLayer
+placeFacade --> BusinessLogicLayer
+amenityFacade --> BusinessLogicLayer
+reviewFacade --> BusinessLogicLayer
 BusinessLogicLayer --> PersistenceLayer : Database operations
 
 note for PresentationLayer "This layer handles communication with the user:
@@ -62,5 +62,5 @@ note for PersistenceLayer "This layer interact directly with the database:
     After the request is confirmed, it will perform the necessary operations
     to read, write or update the database."
 
-note for user_facade "The facades is used to order the application:
+note for userFacade "The facades is used to order the application:
 It call the right methods depending of the user request"
