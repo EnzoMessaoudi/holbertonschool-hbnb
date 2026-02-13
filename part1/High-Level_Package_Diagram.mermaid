@@ -1,14 +1,32 @@
 classDiagram
 
 class PresentationLayer {
-    Collect_request_user()
+    user_request()
     show_result()
-    send_request()
 }
 
-class Facade {
-    check_user_request()
-    call_right_functions()
+class user_facade {
+    add_user()
+    update_user()
+    delete_user()
+}
+class place_facade{
+    create_place()
+    update_place()
+    delete_place()
+    list_place()
+}
+class review_facade{
+    add_review()
+    update_review()
+    delete_review()
+    list_review()
+}
+class amenity_facade{
+    add_amenity()
+    update_amenity()
+    delete_amenity()
+    list_amenity()
 }
 
 class BusinessLogicLayer {
@@ -22,8 +40,14 @@ class PersistenceLayer {
     delete()
 }
 
-PresentationLayer --> Facade
-Facade --> BusinessLogicLayer
+PresentationLayer --> user_facade
+PresentationLayer --> place_facade
+PresentationLayer --> amenity_facade
+PresentationLayer --> review_facade
+user_facade --> BusinessLogicLayer
+place_facade --> BusinessLogicLayer
+amenity_facade --> BusinessLogicLayer
+review_facade --> BusinessLogicLayer
 BusinessLogicLayer --> PersistenceLayer : Database operations
 
 note for PresentationLayer "This layer handles communication with the user:
@@ -37,5 +61,5 @@ note for PersistenceLayer "This layer interact directly with the database:
     After the request is confirmed, it will perform the necessary operations
     to read, write or update the database."
 
-note for Facade "The facade is used to order the application:
-It call the right methods"
+note for user_facade "The facades is used to order the application:
+It call the right methods depending of the user request"
