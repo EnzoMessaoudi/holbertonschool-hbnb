@@ -6,9 +6,8 @@ participant API
 participant BusinessLogic
 participant Database
 
-User->>API: add_user()
-API->>BusinessLogic: check_request()
-
+User->>API: addUser()
+API->>BusinessLogic: checkRequest()
 
 alt Validation failed
     BusinessLogic-->>API: Return Failure
