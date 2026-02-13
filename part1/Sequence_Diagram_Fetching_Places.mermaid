@@ -2,10 +2,10 @@
 
 sequenceDiagram
 title FETCHING A LIST OF PLACES
-participant User
+actor User
 participant API
 participant BusinessLogic
-participant Database
+participant Database@{ "type" : "database" }
 
 User->>API: ListPlace
 API->>BusinessLogic: CheckRequest
@@ -19,3 +19,11 @@ else Validation success
     BusinessLogic-->>API: ReturnList
     API-->>User: ShowResult
 end
+
+Note left of User: The User wants to list all the places with certains attributes:<br/>- Title<br/>- Exact price or between two prices<br/>- Latitude<br/>- longitude
+
+Note over API: The API will check the request send by the user and call the rights methods.
+
+Note over BusinessLogic: This layer will check if the request can enter the database:<br/>- If the coordinates given by the user can be reachable
+
+Note right of Database: Will Read inside of the Database every places that match the user contraints and will return a list of them for the user to see.
