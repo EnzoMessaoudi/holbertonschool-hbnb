@@ -1,0 +1,21 @@
+%%{ init : { "theme": "neutral" } }%%
+
+sequenceDiagram
+title FETCHING A LIST OF PLACES
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: ListPlace
+API->>BusinessLogic: CheckRequest
+
+alt Validation Failed
+    BusinessLogic-->>API: Return Failure
+    API-->>User: ShowResult
+else Validation success
+    BusinessLogic->>Database: ReadList
+    Database-->>BusinessLogic: ReturnList
+    BusinessLogic-->>API: ReturnList
+    API-->>User: ShowResult
+end
