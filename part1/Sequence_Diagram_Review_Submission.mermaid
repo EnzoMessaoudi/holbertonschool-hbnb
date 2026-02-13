@@ -1,0 +1,21 @@
+%%{ init : { "theme": "neutral" } }%%
+
+sequenceDiagram
+title REVIEW SUBMISSION
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: AddReview
+API->>BusinessLogic: CheckRequest
+
+alt Validation Failed
+    BusinessLogic-->>API: Return Failure
+    API-->>User: ShowResult
+else Validation success
+    BusinessLogic->>Database: AddReview
+    Database-->>BusinessLogic: ReviewAdded
+    BusinessLogic-->>API: Return Response
+    API-->>User: ShowResult
+end
