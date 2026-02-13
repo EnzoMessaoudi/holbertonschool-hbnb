@@ -2,10 +2,10 @@
 
 sequenceDiagram
 title USER REGISTRATION
-participant User
+actor User
 participant API
 participant BusinessLogic
-participant Database
+participant Database@{ "type" : "database" }
 
 User->>API: AddUser
 API->>BusinessLogic: CheckRequest
@@ -19,3 +19,11 @@ else Validation success
     BusinessLogic-->>API: Return Response
     API-->>User: ShowResult
 end
+
+Note over User: A user want to create an account and gives all the data asked:<br/>- first name<br/>- last name<br>- email<br/>- password
+
+Note over API:The API will check the request send by the user and call the rights methods
+
+Note over BusinessLogic: The BusinessLogic layer will verify if all the requirements are checked:<br/>- None of the fields are empty<br/>- None of the datas given exists already<br/>- None of the words given are offensives
+
+Note over Database: Finally, we will add the new user to the database and return the validation
