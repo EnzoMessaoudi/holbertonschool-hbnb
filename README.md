@@ -31,6 +31,12 @@ BusinessLogicLayer: Checks whether a request can access the database and determi
 
 ## API Diagrams
 
+In those diagrams, we can see how the layers interact with each others when an API is called by the user.  
+First, we can see that the request is picked up in the presentation layer, thanks to its interface. The facade will then call the methods that will be use to respect the request of the user.  
+Then, the request is passed to the buisness layer. In this layer, we will check if the user request can be passed to the database or if we have to return it with an error.  
+Finally, we see that the request finish at the database and it modify it (write, update, delete or read).  
+After the request is finished inside of the database, we return the result to the user, which can see what he modify.  
+
 ### user_registration_Diagram
 ![link](png/user_registration_diagram.png)
 
