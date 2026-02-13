@@ -8,14 +8,16 @@
 ## Buisness_Layer_Diagram
 ![link](png/Buisness_layer_diagram.png)
 
-## user_registration_Diagram
+## API Diagrams
+
+### user_registration_Diagram
 ![link](png/user_registration_diagram.png)
 
-## Place_Creation_Diagram
+### Place_Creation_Diagram
 ![link](png/Place_Creation_diagram.png)
 
-## Review_Diagram
+### Review_Diagram
 ![link](png/review_diagram.png)
 
-## Fetch_Places_Diagram
+### Fetch_Places_Diagram
 ![link](png/Fetch_Places_Diagram.png)
