@@ -18,6 +18,17 @@ We can use a facade pattern, like shows in the diagram, to helps us arrange how 
 ## Buisness_Layer_Diagram
 ![link](png/Buisness_layer_diagram.png)
 
+Class User: Allows a person to create a profile that enables them to rent a property, create a listing, and leave a review on a rental.  
+Class Places: Allows the creation and deletion of rental listings.  
+Class Review: Allows writing reviews or deleting reviews.  
+Class Amenity: Allows adding all places/items belonging to a rental or removing them.  
+Global Description:  
+The User class allows a person to create a profile with which they can either rent a property or create a rental listing. The listing can be modified using the Places class. With the Amenity class, the user can add any place or item useful for the rental. Finally, with the Review class, the user can leave a review.  
+
+
+BusinessLogicLayer: Checks whether a request can access the database and determines what actions should be taken.  
+
+
 ## API Diagrams
 
 ### user_registration_Diagram
