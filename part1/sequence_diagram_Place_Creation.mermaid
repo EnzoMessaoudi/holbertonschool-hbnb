@@ -1,0 +1,21 @@
+%%{ init : { "theme": "neutral" } }%%
+
+sequenceDiagram
+title PLACE CREATION
+participant User
+participant API
+participant BusinessLogic
+participant Database
+
+User->>API: CreatePlace
+API->>BusinessLogic: CheckRequest
+
+alt Validation Failed
+    BusinessLogic-->>API: Return Failure
+    API-->>User: ShowResult
+else Validation success
+    BusinessLogic->>Database: CreatePlace
+    Database-->>BusinessLogic: PlaceCreated
+    BusinessLogic-->>API: Return Response
+    API-->>User: ShowResult
+end
