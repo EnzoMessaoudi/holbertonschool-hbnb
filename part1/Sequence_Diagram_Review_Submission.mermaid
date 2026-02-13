@@ -2,10 +2,10 @@
 
 sequenceDiagram
 title REVIEW SUBMISSION
-participant User
+actor User 
 participant API
 participant BusinessLogic
-participant Database
+participant Database@{ "type" : "database" }
 
 User->>API: AddReview
 API->>BusinessLogic: CheckRequest
@@ -19,3 +19,11 @@ else Validation success
     BusinessLogic-->>API: Return Response
     API-->>User: ShowResult
 end
+
+Note left of User: The user wants to review a place he visited. He needs to give two datas:<br/>- Rating<br/>- Comment
+
+Note over API: The API will check the request send by the user and call the rights methods
+
+Note over BusinessLogic: The BusinessLogic layer will check the request sent by the API and verify if it's correct:<br/>- Nothing is empty<br/>- The user didn't already write a reviews on this place
+
+Note right of Database:After the review is verified, it will be added to the database then will be visible on the application
