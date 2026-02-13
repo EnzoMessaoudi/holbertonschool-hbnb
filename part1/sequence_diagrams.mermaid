@@ -13,7 +13,6 @@ alt Validation failed
     API-->>User:show_result()
 else Validation success
     BusinessLogic->>Database: AddUser
-    Database->>Database:write()
     Database-->>BusinessLogic: UserCreated
     BusinessLogic-->>API: Return Response
     API-->>User: show_result()
