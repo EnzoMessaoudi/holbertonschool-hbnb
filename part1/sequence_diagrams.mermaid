@@ -6,12 +6,12 @@ participant API
 participant BusinessLogic
 participant Database
 
-User->>API: addUser()
-API->>BusinessLogic: checkRequest()
+User->>API: AddUser()
+API->>BusinessLogic: CheckRequest()
 
-alt Validation failed
+alt Validation Failed
     BusinessLogic-->>API: Return Failure
-    API-->>User:show_result()
+    API-->>User:ShowResult()
 else Validation success
     BusinessLogic->>Database: AddUser
     Database-->>BusinessLogic: UserCreated

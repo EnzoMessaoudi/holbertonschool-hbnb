@@ -1,37 +1,37 @@
 classDiagram
 
 class PresentationLayer {
-    userRequest()
-    showResult()
+    UserRequest()
+    ShowResult()
 }
 
-class userFacade {
-    addUser()
-    updateUser()
-    deleteUser()
+class UserFacade {
+    AddUser()
+    UpdateUser()
+    DeleteUser()
 }
-class placeFacade{
-    createPlace()
+class PlaceFacade{
+    CreatePlace()
     updatePlace()
     deletePlace()
     listPlace()
 }
-class reviewFacade{
-    addReview()
-    updateReview()
-    deleteReview()
-    listReview()
+class ReviewFacade{
+    AddReview()
+    UpdateReview()
+    DeleteReview()
+    ListReview()
 }
-class amenityFacade{
-    addAmenity()
-    updateAmenity()
-    deleteAmenity()
-    listAmenity()
+class AmenityFacade{
+    AddAmenity()
+    UpdateAmenity()
+    DeleteAmenity()
+    ListAmenity()
 }
 
 class BusinessLogicLayer {
-    checkRequest()
-    validateRequest()
+    CheckRequest()
+    ValidateRequest()
 }
 
 class PersistenceLayer {
@@ -41,14 +41,14 @@ class PersistenceLayer {
     Delete()
 }
 
-PresentationLayer --> userFacade
-PresentationLayer --> placeFacade
-PresentationLayer --> amenityFacade
-PresentationLayer --> reviewFacade
-userFacade --> BusinessLogicLayer
-placeFacade --> BusinessLogicLayer
-amenityFacade --> BusinessLogicLayer
-reviewFacade --> BusinessLogicLayer
+PresentationLayer --> UserFacade
+PresentationLayer --> PlaceFacade
+PresentationLayer --> AmenityFacade
+PresentationLayer --> ReviewFacade
+UserFacade --> BusinessLogicLayer
+PlaceFacade --> BusinessLogicLayer
+AmenityFacade --> BusinessLogicLayer
+ReviewFacade --> BusinessLogicLayer
 BusinessLogicLayer --> PersistenceLayer : Database operations
 
 note for PresentationLayer "This layer handles communication with the user:
@@ -62,5 +62,5 @@ note for PersistenceLayer "This layer interact directly with the database:
     After the request is confirmed, it will perform the necessary operations
     to read, write or update the database."
 
-note for userFacade "The facades is used to order the application:
+note for UserFacade "The facades is used to order the application:
 It call the right methods depending of the user request"
