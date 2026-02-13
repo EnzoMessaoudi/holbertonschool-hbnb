@@ -2,10 +2,10 @@
 
 sequenceDiagram
 title PLACE CREATION
-participant User
+actor User
 participant API
 participant BusinessLogic
-participant Database
+participant Database@{ "type" : "database" }
 
 User->>API: CreatePlace
 API->>BusinessLogic: CheckRequest
@@ -19,3 +19,11 @@ else Validation success
     BusinessLogic-->>API: Return Response
     API-->>User: ShowResult
 end
+
+Note left of User: The user want to create a place on the application and have to give datas:<br/>- Title<br/>- Description<br/>- Price<br/>- Latitude<br/>- longitude
+
+Note over API: The API will check the request send by the user and call the rights methods.
+
+Note over BusinessLogic: The BusinessLogic layer will check the request sent by the API and verify if it's correct:<br/>- Nothing is empty<br/>- None of the existing places have the same informations<br/>- If possible, check if the location really exist
+
+Note right of Database: After it's verified, the place will be add to the database and publish on the application for everyone.
