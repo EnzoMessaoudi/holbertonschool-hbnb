@@ -22,7 +22,7 @@ Class User: Allows a person to create a profile that enables them to rent a prop
 Class Places: Allows the creation and deletion of rental listings.  
 Class Review: Allows writing reviews or deleting reviews.  
 Class Amenity: Allows adding all places/items belonging to a rental or removing them.  
-Global Description:  
+Global Description :  
 The User class allows a person to create a profile with which they can either rent a property or create a rental listing. The listing can be modified using the Places class. With the Amenity class, the user can add any place or item useful for the rental. Finally, with the Review class, the user can leave a review.  
 
 
