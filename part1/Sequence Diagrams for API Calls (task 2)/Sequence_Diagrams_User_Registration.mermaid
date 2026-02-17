@@ -1,34 +1,24 @@
-%%{ init : { "theme": "neutral" } }%%
-
 sequenceDiagram
-title REVIEW SUBMISSION
-actor User 
+title USER REGISTRATION
+actor User
 participant API
 participant BusinessLogic
 participant Database@{ "type" : "database" }
 
-User->>API: AddReview
-API->>BusinessLogic: CheckRequest
+User->>API: POST /users
+API->>BusinessLogic: CheckRequest()
 
 alt 400 Bad Request (Validation Failed)
     BusinessLogic-->>API: ValidationError
     API-->>User: code error 400
-else 409 Conflict (Review Already Exists on this place)
-    BusinessLogic->>Database: CheckidReview()
-    Database-->>BusinessLogic: ReviewExists
-    BusinessLogic-->>API: DuplicateReview
+else 409 Conflict (User Already Exists)
+    BusinessLogic->>Database: CheckEmail()
+    Database-->>BusinessLogic: EmailExists
+    BusinessLogic-->>API: DuplicateUser
     API-->>User: 409 Conflict error
 else 201 Created (Success)
-    BusinessLogic->>Database: AddReview()
-    Database-->>BusinessLogic: ReviewCreated
+    BusinessLogic->>Database: AddUser()
+    Database-->>BusinessLogic: UserCreated
     BusinessLogic-->>API: Success
     API-->>User: 201 Created
 end
-
-Note left of User: The user wants to review a place he visited. He needs to give two datas:<br/>- Rating<br/>- Comment
-
-Note over API: The API will check the request send by the user and call the rights methods
-
-Note over BusinessLogic: The BusinessLogic layer will check the request sent by the API and verify if it's correct:<br/>- Nothing is empty<br/>- The user didn't already write a reviews on this place
-
-Note right of Database:After the review is verified, it will be added to the database then will be visible on the application

@@ -10,14 +10,19 @@ participant Database@{ "type" : "database" }
 User->>API: AddReview
 API->>BusinessLogic: CheckRequest
 
-alt Validation Failed
-    BusinessLogic-->>API: Return Failure
-    API-->>User: ShowResult
-else Validation success
-    BusinessLogic->>Database: AddReview
-    Database-->>BusinessLogic: ReviewAdded
-    BusinessLogic-->>API: Return Response
-    API-->>User: ShowResult
+alt 400 Bad Request (Validation Failed)
+    BusinessLogic-->>API: ValidationError
+    API-->>User: code error 400
+else 409 Conflict (Review Already Exists on this place)
+    BusinessLogic->>Database: CheckidReview()
+    Database-->>BusinessLogic: ReviewExists
+    BusinessLogic-->>API: DuplicateReview
+    API-->>User: 409 Conflict error
+else 201 Created (Success)
+    BusinessLogic->>Database: AddReview()
+    Database-->>BusinessLogic: ReviewCreated
+    BusinessLogic-->>API: Success
+    API-->>User: 201 Created
 end
 
 Note left of User: The user wants to review a place he visited. He needs to give two datas:<br/>- Rating<br/>- Comment
