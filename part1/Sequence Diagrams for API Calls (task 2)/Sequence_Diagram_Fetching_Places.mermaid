@@ -10,14 +10,19 @@ participant Database@{ "type" : "database" }
 User->>API: ListPlace
 API->>BusinessLogic: CheckRequest
 
-alt Validation Failed
-    BusinessLogic-->>API: Return Failure
-    API-->>User: ShowResult
-else Validation success
+alt Code error 400 Bad Request(Validation Failed)
+    BusinessLogic-->>API: ValidationError
+    API-->>User: code error 400
+else 404 Conflict (Places with these characteristics not found)
+    BusinessLogic->>Database: CheckPlaces()
+    Database-->>BusinessLogic: PlaceNotExist
+    BusinessLogic-->>API: DuplicatePlaceNotPlaces
+    API-->>User: 404 NotFound error
+else 200 (Found)
     BusinessLogic->>Database: ReadList
     Database-->>BusinessLogic: ReturnList
     BusinessLogic-->>API: ReturnList
-    API-->>User: ShowResult
+    API-->>User: 200 found
 end
 
 Note left of User: The User wants to list all the places with certains attributes:<br/>- Title<br/>- Exact price or between two prices<br/>- Latitude<br/>- longitude
