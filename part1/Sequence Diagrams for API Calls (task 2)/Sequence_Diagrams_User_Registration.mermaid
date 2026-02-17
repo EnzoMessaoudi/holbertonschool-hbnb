@@ -10,12 +10,12 @@ API->>BusinessLogic: CheckRequest()
 
 alt 400 Bad Request (Validation Failed)
     BusinessLogic-->>API: ValidationError
-    API-->>User: 400 Bad Request + Error Message
+    API-->>User: code error 400
 else 409 Conflict (User Already Exists)
     BusinessLogic->>Database: CheckEmail()
     Database-->>BusinessLogic: EmailExists
     BusinessLogic-->>API: DuplicateUser
-    API-->>User: 409 Conflict
+    API-->>User: 409 Conflict error
 else 201 Created (Success)
     BusinessLogic->>Database: AddUser()
     Database-->>BusinessLogic: UserCreated
