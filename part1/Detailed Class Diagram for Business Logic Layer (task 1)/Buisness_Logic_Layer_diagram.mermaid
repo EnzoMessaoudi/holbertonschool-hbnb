@@ -1,17 +1,32 @@
 classDiagram
 
+class UUID{
+    +User_creation_date
+    +User_Update_date
+    +Review_Creation_date
+    +Review_update_date
+    +Places_creation_date
+    +Places_update_date
+}
 
 class User {
   +string first_name
   +string last_name
-  +string email
-  +string Password
-  +string Email
-  +string Id
+  -string email
+  -string Password
+  +int Id
   +write_review()
   +Create_acount()
   +Update_account()
   +delete_account()
+}
+
+class Review {
+  +string text
+  +int rating
+  +int Id
+  +update_text()
+  +update_rating()
 }
 
 class Places {
@@ -20,33 +35,33 @@ class Places {
   +float price
   +float latitude
   +float longitude
+  +int Id
   +add_amenity()
   +remove_amenity()
   +Delete_place()
   +List_place()
 }
 
-class Review {
-  +string text
-  +int rating
-  +string Id
-  +update_text()
-  +update_rating()
+class Places_Amenity{
+    Places.int Id
+    Amenity. int Id
 }
 
 class Amenity {
   +string name
   +string description
-  +string Id
+  +int Id
   +Create_amenity()
   +Update_amenity()
   +Delete_amenity()
   +List_amenity()
 
 }
-
-
-User --> Places: The user can write/update information about the rentals 
-User --> Review: Allow the user to write reviews or update them
-Review --> Places
-Amenity --> Places: Allow the user to describe the places/items included in the rental
+User --> UUID
+Places --> UUID
+Review --> UUID
+Places "1" *-- "0..*" User
+Review *--"1" User
+Review "0..1" *-- "0..*" Places
+Places "0..*" --> "0..*" Places_Amenity
+Amenity "0..*" --> "0..*"  Places_Amenity
