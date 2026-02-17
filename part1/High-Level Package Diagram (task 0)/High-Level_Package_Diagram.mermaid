@@ -1,66 +1,52 @@
-classDiagram
+flowchart TB
 
-class PresentationLayer {
-    UserRequest()
-    ShowResult()
-}
+%% =========================
+%% Presentation Layer
+%% =========================
+subgraph "Presentation Layer"
+    API[REST API / Controllers]
+    Services[Application Services]
+end
 
-class UserFacade {
-    AddUser()
-    UpdateUser()
-    DeleteUser()
-}
-class PlaceFacade{
-    CreatePlace()
-    UpdatePlace()
-    DeletePlace()
-    ListPlace()
-}
-class ReviewFacade{
-    AddReview()
-    UpdateReview()
-    DeleteReview()
-    ListReview()
-}
-class AmenityFacade{
-    AddAmenity()
-    UpdateAmenity()
-    DeleteAmenity()
-    ListAmenity()
-}
+%% =========================
+%% Business Logic Layer
+%% =========================
+subgraph "Business Logic Layer"
+    
+    Facade[HBnB Facade]
 
-class BusinessLogicLayer {
-    CheckRequest()
-    ValidateRequest()
-}
+    subgraph "Domain Models"
+        User[User]
+        Place[Place]
+        Review[Review]
+        Amenity[Amenity]
+    end
 
-class PersistenceLayer {
-    Read()
-    Write()
-    Update()
-    Delete()
-}
+end
 
-PresentationLayer --> UserFacade
-PresentationLayer --> PlaceFacade
-PresentationLayer --> AmenityFacade
-PresentationLayer --> ReviewFacade
-UserFacade --> BusinessLogicLayer
-PlaceFacade --> BusinessLogicLayer
-AmenityFacade --> BusinessLogicLayer
-ReviewFacade --> BusinessLogicLayer
-BusinessLogicLayer --> PersistenceLayer : Database operations
+%% =========================
+%% Persistence Layer
+%% =========================
+subgraph "Persistence Layer"
+    Repo[Repositories / DAO]
+    DB[(Database)]
+end
 
-note for PresentationLayer "This layer handles communication with the user:
-It's the interface of the application."
+%% =========================
+%% Communication (Facade Pattern)
+%% =========================
 
-note for BusinessLogicLayer "This layer is the core logic of the application:
-    It checks if a request can access to the database
-    and determines what actions should be taken."
+API --> Services
+Services --> Facade
 
-note for PersistenceLayer "This layer interact directly with the database:
-    After the request is confirmed, it will perform the necessary operations
-    to read, write or update the database."
+Facade --> User
+Facade --> Place
+Facade --> Review
+Facade --> Amenity
 
-note for UserFacade "The facades is used to order the application:
-It call the right methods depending of the user request"
+User --> Repo
+Place --> Repo
+Review --> Repo
+Amenity --> Repo
+
+Repo --> DB
