@@ -10,14 +10,19 @@ participant Database@{ "type" : "database" }
 User->>API: CreatePlace
 API->>BusinessLogic: CheckRequest
 
-alt Validation Failed
-    BusinessLogic-->>API: Return Failure
-    API-->>User: ShowResult
-else Validation success
-    BusinessLogic->>Database: CreatePlace
+alt 400 Bad Request (Validation Failed)
+    BusinessLogic-->>API: ValidationError
+    API-->>User: code error 400
+else 409 Conflict (Place Already Exists)
+    BusinessLogic->>Database: CheckPlaces()
+    Database-->>BusinessLogic: PlaceExist
+    BusinessLogic-->>API: DuplicatePlace
+    API-->>User: 409 Conflict error
+else 201 Created (Success)
+    BusinessLogic->>Database: AddPlace()
     Database-->>BusinessLogic: PlaceCreated
-    BusinessLogic-->>API: Return Response
-    API-->>User: ShowResult
+    BusinessLogic-->>API: Success
+    API-->>User: 201 Created
 end
 
 Note left of User: The user want to create a place on the application and have to give datas:<br/>- Title<br/>- Description<br/>- Price<br/>- Latitude<br/>- longitude
