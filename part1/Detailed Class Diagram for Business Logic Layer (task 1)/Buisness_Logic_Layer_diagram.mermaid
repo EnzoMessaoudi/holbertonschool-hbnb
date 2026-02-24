@@ -10,11 +10,14 @@ class UUID{
 }
 
 class User {
+  +string id
   +string first_name
   +string last_name
   -string email
-  -string Password
-  +int Id
+  -string password
+  +boolean is_admin
+  +DateTime created_at
+  +DateTime updated_at
   +write_review()
   +Create_acount()
   +Update_account()
