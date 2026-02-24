@@ -1,7 +1,19 @@
                                                                          HOLBERTON School Hbnb Part2
+
+                            This project aims to reproduce the core features of airbnb by buildind a structured backend APi.
+                            It demonstrates the use of Flask.
+
+
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 <img width="238" height="159" alt="Projet hbnb1 " src="https://github.com/user-attachments/assets/6b23f481-3fc5-467e-92f4-bbe3bd928592" />
+
+api/ : Main folder containing everything related to application's routes.
+
+__init__.py : Makes the folder a python module and initializes the application.
+
+v1/ :
 
 user.py : Contains routers related to users.
 
@@ -15,7 +27,9 @@ amenities.py : Contains routes related to amenities wifi, pool, etc.
 
 <img width="188" height="120" alt="Projet hbnb2 " src="https://github.com/user-attachments/assets/8242b6f2-a39a-4f93-a480-a35caf2dd1dd" />
 
-models : This folder contains data models.
+models/ : This folder contains data models.
+
+__init__.py : Makes the folder a python module and initializes the application.
 
 user.py : Defines the user class.
 
@@ -29,7 +43,9 @@ amenity.py : Defines the amenity class.
 
 <img width="185" height="58" alt="Projet hbnb3 " src="https://github.com/user-attachments/assets/33a737d2-6cb9-479a-80e0-031e1f756c4f" />
 
-services : Contains the logic for files:
+services/ : Contains the logic for files.
+
+__init__.py : Makes the folder a python module and initializes the application.
 
 facade.py : The facade controls how the application works behind the scenes.
 
@@ -37,7 +53,9 @@ facade.py : The facade controls how the application works behind the scenes.
 
 <img width="202" height="62" alt="Projet hbnb4 " src="https://github.com/user-attachments/assets/c1782baa-aa1b-43f9-9a90-dfc7352a06ed" />
 
-persistence : Saving and retrieving data from storage.
+persistence/ : Saving and retrieving data from storage.
+
+__init__.py : Makes the folder a python module and initializes the application.
 
 repository.py : The file that handles communication with the database.
 
@@ -54,3 +72,5 @@ requirements.txt : Files list all python dependencies needed to run the project.
 readme.md : Documentation file for the project
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Made by Killian Le boulzec and Enzo Messaoudi
