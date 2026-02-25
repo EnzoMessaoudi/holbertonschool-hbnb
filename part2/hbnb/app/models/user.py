@@ -6,9 +6,9 @@ import re
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin=False, places=None):
         super().__init__()
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
+        self.First_name = first_name
+        self.Last_name = last_name
+        self.Email = email
         self.is_admin = is_admin
         self.places = []
         self.reviews = []
