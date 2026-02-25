@@ -16,6 +16,9 @@ class Review(BaseModel):
     
     @text.setter
     def text(self, value):
+        """
+        Check if the text is a string and non empty
+        """
         if not isinstance(value, str):
             raise TypeError ("Text must be a string")
         if value == "":
@@ -28,6 +31,11 @@ class Review(BaseModel):
     
     @rating.setter
     def rating(self, value):
-        if not isinstance(value, int) or not 1 <= value >= 5:
-            raise TypeError ("Rating must an integer between 1 and 5")
+        """
+        Check if the rating is an int between 1 or 5 
+        """
+        if not isinstance(value, int):
+            raise TypeError ("Rating must an integer")
+        if not 1 <= value <= 5:
+            raise ValueError("Rating must be an integer bewteen 1 and 5")
         self._rating = value
