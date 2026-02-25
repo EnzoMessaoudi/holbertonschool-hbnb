@@ -11,7 +11,7 @@ class Amenity(BaseModel):
         @property
         def name(self):
             """
-            Check if the name is correct
+            Check if the name is a non empty string and is less than 50 chars
             """    
             return self._name
         
