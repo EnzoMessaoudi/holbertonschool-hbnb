@@ -14,66 +14,82 @@ class Place(BaseModel):
         self.reviews = []
         self.amenities = []
 
-        @property
-        def Title(self):
-            """
-            Check if the user gave a good title
-            """
-            return self._title
+    @property
+    def title(self):
+        """
+        Check if the title is non empy, a string and less than 100 chars
+        """
+        return self._title
         
-        @Title.setter
-        def Title(self, value):
-            if value == "":
-                raise ValueError ("Title is required")
-            if len(value) > 100:
-                raise ValueError ("Title must be under 100 Characters")
-            if not isinstance(value, str):
-                raise TypeError ("Title must be a string")
-            self._title = value
+    @title.setter
+    def title(self, value):
+        if not isinstance(value, str):
+            raise TypeError ("Title must be a string")
+        self._title = value
+        if value == "":
+            raise ValueError ("Title is required")
+        if len(value) > 100:
+            raise ValueError ("Title must be under 100 Characters")
+
             
-        @property
-        def price(self):
-            """
-            Check if the user price is good
-            """
-            return self._price
+    @property
+    def description(self):
+        """
+        Check if the description is a string
+        """
+        return self._description
         
-        @price.setter
-        def price(self, value):
-            if value < 0:
-                raise ValueError ("Price must be positive")
-            if not isinstance(value, float):
-                raise TypeError ("Price must be a float")
+    @description.setter
+    def description(self, value):
+        if value is not None and not isinstance(value, str):
+            raise TypeError("Description must be a string or None")
+        self._description = value or ""
+
+    @property
+    def price(self):
+        """
+        Check if the price is positive and a float or an int
+        """
+        return self._price
+        
+    @price.setter
+    def price(self, value):
+        if not isinstance(value, (float, int)):
+            raise TypeError("Price must be a number")
+        value = float(value)
+        if value < 0:
+            raise ValueError("Price must be positive")
+        self._price = value
             
-        @property
-        def latitude(self):
-            """
-            Check if the user latitude is good
-            """
-            return self._latitude
+    @property
+    def latitude(self):
+        """
+        Check if the latitude is a float, non empty and exists
+        """
+        return self._latitude
         
-        @latitude.setter
-        def latitude(self, value):
-            if not isinstance(value, float):
-                raise TypeError ("Latitude must be a Float")
-            if not -90.0 <= value >= 90.0:
-                raise ValueError ("Latitude must be between -90.0 and 90.0")
-            self._latitude = value
+    @latitude.setter
+    def latitude(self, value):
+        if not isinstance(value, float):
+            raise TypeError ("Latitude must be a Float")
+        if not (-90.0 <= value <= 90.0):
+            raise ValueError ("Latitude must be between -90.0 and 90.0")
+        self._latitude = value
             
-        @property
-        def longitude(self):
-            """
-            Check if the user longitude is good
-            """
-            return self._longitude
+    @property
+    def longitude(self):
+        """
+        Check if the longitude is a float, non empty and exists
+        """
+        return self._longitude
         
-        @longitude.setter
-        def longitude(self, value):
-            if not isinstance(value, float):
-                raise TypeError ("Longitude must be a Float")
-            if not -180.0 <= value >= 180.0:
-                raise ValueError ("longitude must be between -180.0 and 180.0")
-            self._longitude = value
+    @longitude.setter
+    def longitude(self, value):
+        if not isinstance(value, float):
+            raise TypeError ("Longitude must be a Float")
+        if not (-180.0 <= value <= 180.0):
+            raise ValueError ("longitude must be between -180.0 and 180.0")
+        self._longitude = value
 
     def add_review(self, review):
         """Add a review to the place."""
