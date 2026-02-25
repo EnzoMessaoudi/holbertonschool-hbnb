@@ -1,11 +1,13 @@
-                                                                         HOLBERTON School Hbnb Part2
+                                                            HOLBERTON School Hbnb Part2
 
-                            This project aims to reproduce the core features of airbnb by buildind a structured backend APi.
-                            It demonstrates the use of Flask.
+                            This project aims to reproduce the core features of airbnb by buildind a structured backend APi
+                            using Flask.
 
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Project Setup (task00)
+
 
 <img width="238" height="159" alt="Projet hbnb1 " src="https://github.com/user-attachments/assets/6b23f481-3fc5-467e-92f4-bbe3bd928592" />
 
@@ -72,5 +74,17 @@ requirements.txt : Files list all python dependencies needed to run the project.
 readme.md : Documentation file for the project
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Buisness Logic Layer (task 01)
+
+Like said previously, the Buisness logic layer is where the requests are tested, to check if they can be accept to change or see the database, it respect the buisness rules.   
+In the Buisness Logic Layer of our HBnb project, we have four entities: the user, the places, the amenities and the reviews. Each of these entites have their own role.   
+They have 3 attributes in common: a UUId (Universal Unique Identity), a creation date and an update date.
+
+First, the User entity. This entity is use to respect how an user profile is supposed to be. It can create a place.   
+Then, the Place entity, used to respect how the user is supposed to create a place. It can be update, delete, see. It can also see the review and the aminities on this place.
+Next, we have the review entity
+Finally, the amenity entity.
+
 
 Made by Killian Le boulzec and Enzo Messaoudi
