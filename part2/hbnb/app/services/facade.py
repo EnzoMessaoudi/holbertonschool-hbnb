@@ -4,11 +4,13 @@ from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
 
+
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
         self.place_repo = InMemoryRepository()
+        self.review_repo = InMemoryRepository()
 
     def create_user(self, user_data):
         user = User(**user_data)
@@ -22,7 +24,6 @@ class HBnBFacade:
 
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
-
 
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
@@ -45,7 +46,6 @@ class HBnBFacade:
             setattr(amenity, key, value)
         self.amenity_repo.update(amenity, amenity_data)
         return amenity
-
 
     def create_place(self, place_data):
         place = Place(**place_data)
