@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from .basemodel import BaseModel
 
+
 class Review(BaseModel):
     def __init__(self, text, rating, place, user):
         super().__init__()
@@ -13,29 +14,29 @@ class Review(BaseModel):
     @property
     def text(self):
         return self._text
-    
+
     @text.setter
     def text(self, value):
         """
         Check if the text is a string and non empty
         """
         if not isinstance(value, str):
-            raise TypeError ("Text must be a string")
+            raise TypeError("Text must be a string")
         if value == "":
-            raise ValueError ("Text is required")
+            raise ValueError("Text is required")
         self._text = value
 
     @property
     def rating(self):
         return self._rating
-    
+
     @rating.setter
     def rating(self, value):
         """
-        Check if the rating is an int between 1 or 5 
+        Check if the rating is an int between 1 or 5
         """
         if not isinstance(value, int):
-            raise TypeError ("Rating must an integer")
+            raise TypeError("Rating must an integer")
         if not 1 <= value <= 5:
             raise ValueError("Rating must be an integer bewteen 1 and 5")
         self._rating = value
