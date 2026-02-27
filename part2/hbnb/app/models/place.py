@@ -94,15 +94,7 @@ class Place(BaseModel):
     def add_review(self, review):
         """Add a review to the place."""
         self.reviews.append(review)
-    
-    def list_reviews(self):
-        """Used to list the reviews of a place"""
-        print(self.reviews)
 
     def add_amenity(self, amenity):
         """Add an amenity to the place."""
         self.amenities.append(amenity)
-
-    def list_amenity(self):
-        """Used to list the amenities of a place"""
-        print(self.amenities)
