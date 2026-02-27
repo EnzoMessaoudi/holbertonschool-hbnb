@@ -39,7 +39,7 @@ class PlaceList(Resource):
 
         if not place_data:
             return {"error": "Invalid input data"}, 400
-        
+
         new_place = facade.create_place(place_data)
         return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description, 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude, 'owner_id': new_place.owner_id, 'amenities': new_place.amenities}, 201
 
@@ -49,7 +49,7 @@ class PlaceList(Resource):
         
         places = facade.get_all_places()
 
-        return [{'id': place.id, 'title': place.title, 'description': place.description, 'price': place.price, 'latitude': place.latitude, 'longitude': place.longitude, 'owner_id': place.owner_id, 'amenities': place.amenities} for place in places], 201
+        return [{'id': place.id, 'title': place.title, 'latitude': place.latitude, 'longitude': place.longitude} for place in places], 201
 
 
 @api.route('/<place_id>')
@@ -60,11 +60,13 @@ class PlaceResource(Resource):
         """Get place details by ID"""
         
         place = facade.get_place(place_id)
+        owner = facade.get_user(place.owner_id)
+        
 
         if not place:
             return {'error': 'Place not found'}, 404
         
-        return {'id': place.id, 'title': place.title, 'description': place.description, 'price': place.price, 'latitude': place.latitude, 'longitude': place.longitude, 'owner_id': place.owner_id, 'amenities': place.amenities}, 201
+        return {'id': place.id, 'title': place.title, 'description': place.description, 'price': place.price, 'latitude': place.latitude, 'longitude': place.longitude, 'owner': {'id': owner.id, 'first_name': owner.first_name, 'last_name': owner.last_name, 'email': owner.email}, 'amenities': place.amenities}, 201
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
@@ -83,4 +85,4 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
         
-        return {'id': place.id, 'title': place.title, 'description': place.description, 'price': place.price, 'latitude': place.latitude, 'longitude': place.longitude, 'owner_id': place.owner_id, 'amenities': place.amenities}, 201
+        return {"message": "Place updated successfully"}, 201
