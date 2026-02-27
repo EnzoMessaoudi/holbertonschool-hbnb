@@ -20,6 +20,9 @@ class UserList(Resource):
         """Register a new usser"""
         user_data = api.payload
 
+        if not user_data:
+            return {"error": "Invalid input data"}, 400
+
         # Simulate email uniqueness check (to be replaced by real validation with persistence)
         existing_user = facade.get_user_by_email(user_data['email'])
         if existing_user:

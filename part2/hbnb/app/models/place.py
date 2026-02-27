@@ -3,14 +3,14 @@ from datetime import datetime
 from .basemodel import BaseModel
 
 class Place(BaseModel):
-    def __init__(self, title, price, latitude, longitude, owner, description=None,):
+    def __init__(self, title, price, latitude, longitude, description=None, owner_id = None, amenities=None):
         super().__init__()
         self.title = title
         self.description = description
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
-        self.owner = owner
+        self.owner_id = owner_id
         self.reviews = []
         self.amenities = []
 
