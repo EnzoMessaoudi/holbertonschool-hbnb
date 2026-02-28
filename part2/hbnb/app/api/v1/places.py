@@ -52,8 +52,7 @@ class PlaceList(Resource):
                 'price': new_place.price,
                 'latitude': new_place.latitude,
                 'longitude': new_place.longitude,
-                'owner_id': new_place.owner_id,
-                'amenities': new_place.amenities
+                'owner_id': new_place.owner_id
                 }, 201
 
     @api.response(200, 'List of places retrieved successfully')
@@ -68,7 +67,7 @@ class PlaceList(Resource):
                  'longitude': place.longitude
                  }
                 for place in places
-                ], 201
+                ], 200
 
 
 @api.route('/<place_id>')
@@ -97,8 +96,14 @@ class PlaceResource(Resource):
                     'last_name': owner.last_name,
                     'email': owner.email
                     },
-                'amenities': place.amenities
-                }, 201
+                'amenities': [
+                    {
+                        'id': amenity.id,
+                        'name': amenity.name
+                    }
+                    for amenity in place.amenities
+                ]
+                }, 200
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
@@ -117,4 +122,4 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
 
-        return {"message": "Place updated successfully"}, 201
+        return {"message": "Place updated successfully"}, 200
