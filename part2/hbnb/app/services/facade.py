@@ -48,12 +48,21 @@ class HBnBFacade:
         return amenity
 
     def create_place(self, place_data):
+
+        amenities_data = place_data.pop("amenities", [])
+
         place = Place(**place_data)
 
         if not place:
             return None
 
         self.place_repo.add(place)
+
+        for amenity_name in amenities_data:
+            amenity = self.create_amenity({"name": amenity_name})
+
+            if amenity:
+                place.amenities.append(amenity)
 
         return place
 
