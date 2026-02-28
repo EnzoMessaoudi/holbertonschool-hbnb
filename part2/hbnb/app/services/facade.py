@@ -86,25 +86,46 @@ class HBnBFacade:
         return place
 
     def create_review(self, review_data):
-        # Placeholder for logic to create a review, including validation for user_id, place_id, and rating
-        pass
+        review_id = str(self.current_id)
+
+        review = {
+            "id": review_id,
+            "text": review_data["text"],
+            "rating": review_data["rating"],
+            "user_id": review_data["user_id"],
+            "place_id": review_data["place_id"]
+        }
+        self.reviews[review_id] = review
+        self.current_id += 1
+        return review
 
     def get_review(self, review_id):
-        # Placeholder for logic to retrieve a review by ID
-        pass
+        return self.reviews.get(review_id)
 
     def get_all_reviews(self):
-        # Placeholder for logic to retrieve all reviews
-        pass
+        return list(self.reviews.values())
 
     def get_reviews_by_place(self, place_id):
-        # Placeholder for logic to retrieve all reviews for a specific place
-        pass
+        result = []
+        for review in self.reviews.values():
+            if review["place_id"] == place_id:
+                result.append(review)
+        return result
 
     def update_review(self, review_id, review_data):
-        # Placeholder for logic to update a review
-        pass
+        review = self.reviews.get(review_id)
+        if not review:
+            return None
+
+        review["text"] = review_data["text"]
+        review["rating"] = review_data["rating"]
+        review["user_id"] = review_data["user_id"]
+        review["place_id"] = review_data["place_id"]
+
+        return review
 
     def delete_review(self, review_id):
-        # Placeholder for logic to delete a review
-        pass
+        if review_id in self.reviews:
+            del self.reviews[review_id]
+            return True
+        return False
