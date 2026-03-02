@@ -86,17 +86,10 @@ class HBnBFacade:
         return place
 
     def create_review(self, review_data):
-        review_id = str(self.current_id)
-
-        review = {
-            "id": review_id,
-            "text": review_data["text"],
-            "rating": review_data["rating"],
-            "user_id": review_data["user_id"],
-            "place_id": review_data["place_id"]
-        }
-        self.reviews[review_id] = review
-        self.current_id += 1
+        review = Review(**review_data)
+        if not review:
+            return None
+        self.review_repo.add(review)
         return review
 
     def get_review(self, review_id):
