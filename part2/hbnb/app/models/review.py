@@ -40,3 +40,13 @@ class Review(BaseModel):
         if not 1 <= value <= 5:
             raise ValueError("Rating must be an integer bewteen 1 and 5")
         self._rating = value
+
+    def to_dict(self):
+        data = super().to_dict()  # récupère id, created_at, updated_at
+        data.update({
+            "text": self.text,
+            "rating": self.rating,
+            "place_id": self.place_id,
+            "user_id": self.user_id
+        })
+        return data
