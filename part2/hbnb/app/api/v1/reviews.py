@@ -23,13 +23,27 @@ class ReviewList(Resource):
         review = facade.create_review(data)
         if not review:
             return {"error": "Invalid input data"}, 400
-        return review.to_dict(), 201
+        return {
+            'id': review.id,
+            'text': review.text,
+            'rating': review.rating,
+            'user_id': review.user_id,
+            'place_id': review.place_id
+        }, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
         """Retrieve a list of all reviews"""
         reviews = facade.get_all_reviews()
-        return [r.to_dict()for r in reviews], 200
+        return {
+            'reviews': [
+                {
+                    'id': review.id,
+                    'text': review.text,
+                    'rating': review.rating
+                }
+            ] for review in reviews
+        }, 200
 
 
 @api.route('/<review_id>')
@@ -41,7 +55,13 @@ class ReviewResource(Resource):
         review = facade.get_review(review_id)
         if not review:
             return {"error": "review not found"}, 404
-        return review.to_dict(), 200
+        return {
+            'id': review.id,
+            'text': review.text,
+            'rating': review.rating,
+            'user_id': review.user_id,
+            'place_id': review.place_id
+        }, 201
 
     @api.expect(review_model)
     @api.response(200, 'Review updated successfully')
@@ -53,7 +73,7 @@ class ReviewResource(Resource):
         review = facade.update_review(review_id, data)
         if not review:
             return {"error": "Review not found or invalid data"}, 404
-        return review.to_dict(), 200
+        return {"message": "Review updated successfully"}, 200
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
