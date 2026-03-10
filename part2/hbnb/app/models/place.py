@@ -12,7 +12,8 @@ class Place(BaseModel):
                  description=None,
                  owner_id=None,
                  owner=None,
-                 amenities=None
+                 amenities=None,
+                 reviews=None
                  ):
         super().__init__()
         self.title = title

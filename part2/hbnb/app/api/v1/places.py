@@ -16,6 +16,14 @@ user_model = api.model('PlaceUser', {
     'email': fields.String(description='Email of the owner')
 })
 
+# Adding the review model
+review_model = api.model('PlaceReview', {
+    'id': fields.String(description='Review ID'),
+    'text': fields.String(description='Text of the review'),
+    'rating': fields.Integer(description='Rating of the place (1-5)'),
+    'user_id': fields.String(description='ID of the user')
+})
+
 # Define the place model for input validation and documentation
 place_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
@@ -27,7 +35,8 @@ place_model = api.model('Place', {
                               description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
     'amenities': fields.List(fields.String, required=True,
-                             description="List of amenities ID's")
+                             description="List of amenities ID's"),
+    'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
 
@@ -123,3 +132,24 @@ class PlaceResource(Resource):
             return {'error': 'Place not found'}, 404
 
         return {"message": "Place updated successfully"}, 200
+
+
+@api.route('/<place_id>/reviews')
+class PlaceReviewList(Resource):
+    @api.response(200, 'List of reviews for the place retrieved successfully')
+    @api.response(404, 'Place not found')
+    def get(self, place_id):
+        """Get all reviews for a specific place"""
+        reviews = facade.get_reviews_by_place(place_id)
+        if reviews is None:
+            return {"message": "No reviews found for this place"}, 404
+        return {
+                            'reviews': [
+                    {
+                        'id': review.id,
+                        'text': review.text,
+                        'rating': review.rating
+                    }
+                    for review in reviews
+                ]
+        }, 200
