@@ -1,14 +1,17 @@
 import uuid
 from datetime import datetime
 from .basemodel import BaseModel
+from flask_bcrypt import Bcrypt
 import re
 
+bcrypt = Bcrypt()
 
 class User(BaseModel):
     def __init__(self,
                  first_name,
                  last_name,
                  email,
+                 password,
                  is_admin=False,
                  places=None
                  ):
@@ -19,6 +22,7 @@ class User(BaseModel):
         self.is_admin = is_admin
         self.places = []
         self.reviews = []
+        self.password = password
 
     @property
     def first_name(self):
@@ -82,3 +86,11 @@ class User(BaseModel):
         Adds a place
         """
         self.places.append(place)
+
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        return bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        return bcrypt.check_password_hash(self.password, password)
