@@ -1,6 +1,8 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask import request
+from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('reviews', description='Review operations')
 
@@ -67,19 +69,39 @@ class ReviewResource(Resource):
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def put(self, review_id):
         """Update a review's information"""
-        data = request.json
-        review = facade.update_review(review_id, data)
+        current_user = get_jwt_identity()
+        review = facade.get_review(review_id)
+
         if not review:
             return {"error": "Review not found or invalid data"}, 404
+        if review.user_id != current_user:
+            return {'error': 'Unauthorized action'}, 403
+        data = api.payload
+
+        if not data:
+            return {"error": "Review not found or invalid data"}, 400
+
+        data["user_id"] = current_user
+        review_up = facade.update_review(review_id, data)
+
         return {"message": "Review updated successfully"}, 200
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
+    @jwt_required()
     def delete(self, review_id):
         """Delete a review"""
-        success = facade.delete_review(review_id)
-        if not success:
-            return {"error": "Review not found"}, 404
+        current_user = get_jwt_identity()
+        review = facade.get_review(review_id)
+
+        if not review:
+            return {"error": "Review not found or invalid data"}, 404
+        if review.user_id != current_user:
+            return {'error': 'Unauthorized action'}, 403
+
+        success = facade.delete_review(review)
+
         return {"message": "Review deleted successfully"}, 200
