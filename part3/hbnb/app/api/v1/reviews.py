@@ -19,9 +19,20 @@ class ReviewList(Resource):
     @api.expect(review_model)
     @api.response(201, 'Review successfully created')
     @api.response(400, 'Invalid input data')
+    @jwt_required
     def post(self):
         """Register a new review"""
-        data = request.json
+        data = api.payload
+        current_id = get_jwt_identity()
+        user = facade.get_user(current_id)
+        place_reviews = facade.get_reviews_by_place(data.place_id)
+
+        if data.place_id in user.place_id:
+            return {"error": "You cannot review your own place"}, 400
+        
+        if data.user_id in place_reviews.user_id:
+            return {"error": "You have already reviewed this place."}, 400
+
         review = facade.create_review(data)
         if not review:
             return {"error": "Invalid input data"}, 400
