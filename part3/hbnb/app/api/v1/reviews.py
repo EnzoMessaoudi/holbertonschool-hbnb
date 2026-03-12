@@ -29,9 +29,10 @@ class ReviewList(Resource):
 
         if data.place_id in user.place_id:
             return {"error": "You cannot review your own place"}, 400
-        
-        if data.user_id in place_reviews.user_id:
-            return {"error": "You have already reviewed this place."}, 400
+
+        for review in place_reviews:
+            if review.user_id == current_id:
+                return {"error": "You have already reviewed this place."}, 400
 
         review = facade.create_review(data)
         if not review:
