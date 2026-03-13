@@ -85,7 +85,7 @@ class HBnBFacade:
         return self.place_repo.get(place_id)
 
     def get_all_places(self):
-        return self.place_repo.get_all()
+        return [obj for obj in self.place_repo.get_all() if isinstance(obj, Place)]
 
     def update_place(self, place_id, place_data):
         place = self.get_place(place_id)
