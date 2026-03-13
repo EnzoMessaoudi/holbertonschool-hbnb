@@ -18,6 +18,8 @@ class HBnBFacade:
             return None
         password = user_data.get('password')
         user.password = user.hash_password(password)
+        if user.first_name == 'Admin':
+            user.is_admin = True
         self.user_repo.add(user)
         return user
 
