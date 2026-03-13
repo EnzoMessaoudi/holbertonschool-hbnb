@@ -16,9 +16,9 @@ user_model = api.model('User', {
 })
 
 update_user_model = api.model('User', {
-    'first_name': fields.String(required=True,
+    'first_name': fields.String(required=False,
                                 description='First name of the user'),
-    'last_name': fields.String(required=True,
+    'last_name': fields.String(required=False,
                                description='Last name of the user'),
 })
 
@@ -71,7 +71,7 @@ class UserResource(Resource):
     @api.response(403, 'Unauthorized action')
     @api.response(404, 'User not found')
 
-    @jwt_required
+    @jwt_required()
     def put(self, user_id):
         "Update User information"
 
