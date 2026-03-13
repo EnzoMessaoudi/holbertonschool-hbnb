@@ -41,6 +41,19 @@ place_model = api.model('Place', {
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
+update_place_model = api.model('Place', {
+    'title': fields.String(required=True, description='Title of the place'),
+    'description': fields.String(description='Description of the place'),
+    'price': fields.Float(required=True, description='Price per night'),
+    'latitude': fields.Float(required=True,
+                             description='Latitude of the place'),
+    'longitude': fields.Float(required=True,
+                              description='Longitude of the place'),
+    'amenities': fields.List(fields.String, required=True,
+                             description="List of amenities ID's"),
+    'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
+})
+
 
 @api.route('/')
 class PlaceList(Resource):
@@ -122,12 +135,15 @@ class PlaceResource(Resource):
                 ]
                 }, 200
 
-    @api.expect(place_model)
+    @api.expect(update_place_model)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
     @jwt_required()
     def put(self, place_id):
+        """
+        Update a place
+        """
         current_user = get_jwt_identity()
         place = facade.get_place(place_id)
 
