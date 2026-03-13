@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('users', description='User operations')
 
@@ -13,6 +15,13 @@ user_model = api.model('User', {
     'password': fields.String(required=True, description='Password of the user')
 })
 
+update_user_model = api.model('User', {
+    'first_name': fields.String(required=True,
+                                description='First name of the user'),
+    'last_name': fields.String(required=True,
+                               description='Last name of the user'),
+})
+
 
 @api.route('/')
 class UserList(Resource):
@@ -22,7 +31,7 @@ class UserList(Resource):
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
     def post(self):
-        """Register a new usser"""
+        """Register a new user"""
         user_data = api.payload
 
         if not user_data:
@@ -55,3 +64,30 @@ class UserResource(Resource):
                 'last_name': user.last_name,
                 'email': user.email
                 }, 200
+
+    @api.expect(update_user_model, validate=True)
+    @api.response(200, 'User updated successfully !')
+    @api.response(400, 'Invalid input data')
+    @api.response(403, 'Unauthorized action')
+    @api.response(404, 'User not found')
+
+    @jwt_required
+    def put(self, user_id):
+        "Update User information"
+
+        current_user = get_jwt_identity()
+        user = facade.get_user(user_id)
+
+        if not user:
+            return {'error': 'User not found'}, 404
+        if user_id != current_user:
+            return {'error': 'Unauthorized action'}, 403
+        
+        user_data = api.payload
+        if not user_data:
+            return {'error': 'Invalid input data'}, 400
+
+        user_data["user_id"] = current_user
+        updated_place = facade.update_user(user, user_data)
+
+        return {"message": "User updated successfully !"}, 200
