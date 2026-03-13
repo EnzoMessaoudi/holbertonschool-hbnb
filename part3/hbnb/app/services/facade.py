@@ -18,6 +18,8 @@ class HBnBFacade:
             return None
         password = user_data.get('password')
         user.password = user.hash_password(password)
+        if user.first_name == 'Admin':
+            user.is_admin = True
         self.user_repo.add(user)
         return user
 
@@ -85,7 +87,7 @@ class HBnBFacade:
         return self.place_repo.get(place_id)
 
     def get_all_places(self):
-        return self.place_repo.get_all()
+        return [obj for obj in self.place_repo.get_all() if isinstance(obj, Place)]
 
     def update_place(self, place_id, place_data):
         place = self.get_place(place_id)

@@ -2,6 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import request
 
 api = Namespace('users', description='User operations')
 
@@ -15,10 +16,10 @@ user_model = api.model('User', {
     'password': fields.String(required=True, description='Password of the user')
 })
 
-update_user_model = api.model('User', {
-    'first_name': fields.String(required=True,
+update_user_model = api.model('User Update', {
+    'first_name': fields.String(required=False,
                                 description='First name of the user'),
-    'last_name': fields.String(required=True,
+    'last_name': fields.String(required=False,
                                description='Last name of the user'),
 })
 
@@ -46,6 +47,7 @@ class UserList(Resource):
                 'first_name': new_user.first_name,
                 'last_name': new_user.last_name,
                 'email': new_user.email,
+                'is_admin': new_user.is_admin
                 }, 201
 
 
@@ -95,14 +97,27 @@ class UserResource(Resource):
 
         return {"message": "User updated successfully !"}, 200
 
+<<<<<<< HEAD
     @api.route('/users/')
     class AdminUserCreate(Resource):
     @jwt_required()
     def post(self):
+=======
+
+@api.route('/users/')
+class AdminUserCreate(Resource):
+    @api.expect(user_model, validate=True)
+    @jwt_required()
+    def post(self):
+        """
+        Admin user creation user
+        """
+>>>>>>> main
         current_user = get_jwt_identity()
         if not current_user.get('is_admin'):
             return {'error': 'Admin privileges required'}, 403
 
+<<<<<<< HEAD
         user_data = request.json
         email = user_data.get('email')
 
@@ -119,3 +134,21 @@ class UserResource(Resource):
             'firt_name': new_user.first_name,
             'last_name': new_user.last_name
         }, 201
+=======
+        user_data = api.payload
+
+        if not user_data:
+            return {"error": "Invalid input data"}, 400
+
+        # Check if email is already in use
+        email = user_data.get('email')
+        if facade.get_user_by_email(email):
+            return {'error': 'Email already registered'}, 400
+
+        new_user = facade.create_user(user_data)
+        return {'id': new_user.id,
+                'first_name': new_user.first_name,
+                'last_name': new_user.last_name,
+                'email': new_user.email,
+                }, 201
+>>>>>>> main
