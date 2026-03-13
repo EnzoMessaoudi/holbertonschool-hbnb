@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask import request
 
 api = Namespace('users', description='User operations')
@@ -24,31 +24,51 @@ update_user_model = api.model('User Update', {
 })
 
 
-@api.route('/')
-class UserList(Resource):
-    """Class route which can register a user"""
+@api.route('/register')
+class UserRegister(Resource):
     @api.expect(user_model, validate=True)
-    @api.response(201, 'User successfully created')
-    @api.response(400, 'Email already registered')
-    @api.response(400, 'Invalid input data')
     def post(self):
-        """Register a new user"""
         user_data = api.payload
-
         if not user_data:
             return {"error": "Invalid input data"}, 400
 
-        existing_user = facade.get_user_by_email(user_data['email'])
-        if existing_user:
+        email = user_data.get('email')
+        if facade.get_user_by_email(email):
             return {'error': 'Email already registered'}, 400
 
         new_user = facade.create_user(user_data)
-        return {'id': new_user.id,
-                'first_name': new_user.first_name,
-                'last_name': new_user.last_name,
-                'email': new_user.email,
-                'is_admin': new_user.is_admin
-                }, 201
+        return {
+            'id': new_user.id,
+            'first_name': new_user.first_name,
+            'last_name': new_user.last_name,
+            'email': new_user.email,
+            'is_admin': new_user.is_admin
+        }, 201
+
+@api.route('/')
+class AdminUserCreate(Resource):
+    @api.expect(user_model, validate=True)
+    @jwt_required()
+    def post(self):
+        claims = get_jwt()  # récupérer les claims
+        if not claims.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+
+        user_data = api.payload
+        if not user_data:
+            return {"error": "Invalid input data"}, 400
+
+        email = user_data.get('email')
+        if facade.get_user_by_email(email):
+            return {'error': 'Email already registered'}, 400
+
+        new_user = facade.create_user(user_data)
+        return {
+            'id': new_user.id,
+            'first_name': new_user.first_name,
+            'last_name': new_user.last_name,
+            'email': new_user.email,
+        }, 201
 
 
 @api.route('/<user_id>')
@@ -93,33 +113,3 @@ class UserResource(Resource):
         updated_place = facade.update_user(user, user_data)
 
         return {"message": "User updated successfully !"}, 200
-
-
-@api.route('/users/')
-class AdminUserCreate(Resource):
-    @api.expect(user_model, validate=True)
-    @jwt_required()
-    def post(self):
-        """
-        Admin user creation user
-        """
-        current_user = get_jwt_identity()
-        if not current_user.get('is_admin'):
-            return {'error': 'Admin privileges required'}, 403
-
-        user_data = api.payload
-
-        if not user_data:
-            return {"error": "Invalid input data"}, 400
-
-        # Check if email is already in use
-        email = user_data.get('email')
-        if facade.get_user_by_email(email):
-            return {'error': 'Email already registered'}, 400
-
-        new_user = facade.create_user(user_data)
-        return {'id': new_user.id,
-                'first_name': new_user.first_name,
-                'last_name': new_user.last_name,
-                'email': new_user.email,
-                }, 201
