@@ -1,13 +1,12 @@
 import uuid
-from datetime import datetime
 from .basemodel import BaseModel
-from flask_bcrypt import db, Bcrypt
+from app.extensions import db, bcrypt
 from sqlalchemy.orm import validates
 import re
 
-bcrypt = Bcrypt()
-
 class User(BaseModel):
+    __tablename__ = 'users'
+
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
