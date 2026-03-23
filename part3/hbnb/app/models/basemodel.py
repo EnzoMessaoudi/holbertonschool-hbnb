@@ -10,13 +10,11 @@ class BaseModel(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def save(self):
-        """Met à jour updated_at et commit si nécessaire"""
         self.updated_at = datetime.now()
         db.session.add(self)
         db.session.commit()
 
     def update(self, data):
-        """Met à jour les attributs depuis un dictionnaire"""
         for key, value in data.items():
             if hasattr(self, key):
                 setattr(self, key, value)
