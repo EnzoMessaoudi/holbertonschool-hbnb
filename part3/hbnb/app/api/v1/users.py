@@ -11,16 +11,16 @@ user_model = api.model('User', {
     'first_name': fields.String(required=True,
                                 description='First name of the user'),
     'last_name': fields.String(required=True,
-                               description='Last name of the user'),
+                                description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
     'password': fields.String(required=True, description='Password of the user')
 })
 
 update_user_model = api.model('User Update', {
-    'first_name': fields.String(required=False,
-                                description='First name of the user'),
-    'last_name': fields.String(required=False,
-                               description='Last name of the user'),
+    'first_name': fields.String(required=False, description='First name of the user'),
+    'last_name': fields.String(required=False, description='Last name of the user'),
+    'email': fields.String(required=False, description='[READ ONLY] Cannot be modified'),
+    'password': fields.String(required=False, description='[READ ONLY] Cannot be modified'),
 })
 
 
@@ -28,6 +28,7 @@ update_user_model = api.model('User Update', {
 class UserRegister(Resource):
     @api.expect(user_model, validate=True)
     def post(self):
+        """Create a user for anybody"""
         user_data = api.payload
         if not user_data:
             return {"error": "Invalid input data"}, 400
@@ -50,7 +51,8 @@ class AdminUserCreate(Resource):
     @api.expect(user_model, validate=True)
     @jwt_required()
     def post(self):
-        claims = get_jwt()  # récupérer les claims
+        """Create a user passing by admin"""
+        claims = get_jwt()
         if not claims.get('is_admin'):
             return {'error': 'Admin privileges required'}, 403
 
@@ -95,21 +97,31 @@ class UserResource(Resource):
 
     @jwt_required()
     def put(self, user_id):
-        "Update User information"
-
-        current_user = get_jwt_identity()
+        """Update user infos"""
+        current_user = get_jwt()
         user = facade.get_user(user_id)
 
         if not user:
             return {'error': 'User not found'}, 404
         if user_id != current_user:
             return {'error': 'Unauthorized action'}, 403
-        
+
         user_data = api.payload
+
         if not user_data:
             return {'error': 'Invalid input data'}, 400
 
+        if 'email' in user_data or 'password' in user_data:
+            return {'error': 'You cannot modify email or password'}, 400
+        
+        email = user_data.get('email')
+
+        if email:
+            existing_user = facade.get_user_by_email(email)
+            if existing_user and existing_user.id != user_id:
+                return {'error': 'Email is already in use'}, 400
+
         user_data["user_id"] = current_user
-        updated_place = facade.update_user(user, user_data)
+        facade.update_user(user, user_data)
 
         return {"message": "User updated successfully !"}, 200
