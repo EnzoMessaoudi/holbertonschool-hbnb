@@ -13,12 +13,19 @@ class UserRepository(SQLAlchemyRepository):
     def get_user_by_email(self, email):
         return self.model.query.filter_by(email=email).first()
 
+class PlaceRepository(SQLAlchemyRepository):
+    def __init__(self):
+        super().__init__(Place)
+
+    def get_place_by_id(self, place_id):
+        return self.model.query.get(place_id)
+
 
 class HBnBFacade:
     def __init__(self):
         self.user_repo = UserRepository()
+        self.place_repo = PlaceRepository()
         self.amenity_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
         self.review_repo = InMemoryRepository()
 
     def create_user(self, user_data):
