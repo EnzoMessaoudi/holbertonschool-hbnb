@@ -36,7 +36,7 @@ class Place(BaseModel):
     def validate_description(self, key, value):
         if value is not None and not isinstance(value, str):
             raise TypeError("Description must be a string or None")
-        self._description = value or ""
+        return value
 
     @validates("price")
     def validate_price(self, value):
@@ -45,23 +45,23 @@ class Place(BaseModel):
         value = float(value)
         if value < 0:
             raise ValueError("Price must be positive")
-        self._price = value
+        return value
 
     @validates("latitude")
-    def latitude(self, value):
+    def validate_latitude(self, value):
         if not isinstance(value, float):
             raise TypeError("Latitude must be a Float")
         if not (-90.0 <= value <= 90.0):
             raise ValueError("Latitude must be between -90.0 and 90.0")
-        self._latitude = value
+        return value
 
     @validates("longitude")
-    def longitude(self, value):
+    def validate_longitude(self, value):
         if not isinstance(value, float):
             raise TypeError("Longitude must be a Float")
         if not (-180.0 <= value <= 180.0):
             raise ValueError("longitude must be between -180.0 and 180.0")
-        self._longitude = value
+        return value
 
     def add_review(self, review):
         """Add a review to the place."""
