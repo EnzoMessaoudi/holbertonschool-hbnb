@@ -14,12 +14,6 @@ class Place(BaseModel):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
 
-    owner_id = db.Column(db.Integer)
-    owner = None
-
-    amenities = db.Column(db.String)
-    reviews = db.Column(db.String)
-
     @validates("title")
     def validate_title(self, key, value):
         if not isinstance(value, str):
