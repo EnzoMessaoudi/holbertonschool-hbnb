@@ -13,6 +13,7 @@ class Place(BaseModel):
     price = db.Column(db.Float)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     @validates("title")
     def validate_title(self, key, value):
