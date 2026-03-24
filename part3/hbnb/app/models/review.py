@@ -6,7 +6,7 @@ from sqlalchemy.orm import validates
 
 
 class Review(BaseModel):
-    __tablename__ = 'users'
+    __tablename__ = 'reviews'
 
     text = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
