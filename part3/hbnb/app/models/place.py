@@ -1,40 +1,22 @@
 import uuid
 from datetime import datetime
+from app.extensions import db
+from sqlalchemy.orm import validates
 from .basemodel import BaseModel
 
 
 class Place(BaseModel):
-    def __init__(self,
-                 title,
-                 price,
-                 latitude,
-                 longitude,
-                 description=None,
-                 owner_id=None,
-                 owner=None,
-                 amenities=None,
-                 reviews=None
-                 ):
-        super().__init__()
-        self.title = title
-        self.description = description
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
-        self.owner_id = owner_id
-        self.owner = owner
-        self.reviews = []
-        self.amenities = []
+    __tablename__ = 'places'
 
-    @property
-    def title(self):
-        """
-        Check if the title is non empy, a string and less than 100 chars
-        """
-        return self._title
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    price = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    @title.setter
-    def title(self, value):
+    @validates("title")
+    def validate_title(self, key, value):
         if not isinstance(value, str):
             raise TypeError("Title must be a string")
         self._title = value
@@ -43,28 +25,14 @@ class Place(BaseModel):
         if len(value) > 100:
             raise ValueError("Title must be under 100 Characters")
 
-    @property
-    def description(self):
-        """
-        Check if the description is a string
-        """
-        return self._description
-
-    @description.setter
-    def description(self, value):
+    @validates("description")
+    def validate_description(self, key, value):
         if value is not None and not isinstance(value, str):
             raise TypeError("Description must be a string or None")
         self._description = value or ""
 
-    @property
-    def price(self):
-        """
-        Check if the price is positive and a float or an int
-        """
-        return self._price
-
-    @price.setter
-    def price(self, value):
+    @validates("price")
+    def validate_price(self, value):
         if not isinstance(value, (float, int)):
             raise TypeError("Price must be a number")
         value = float(value)
@@ -72,14 +40,7 @@ class Place(BaseModel):
             raise ValueError("Price must be positive")
         self._price = value
 
-    @property
-    def latitude(self):
-        """
-        Check if the latitude is a float, non empty and exists
-        """
-        return self._latitude
-
-    @latitude.setter
+    @validates("latitude")
     def latitude(self, value):
         if not isinstance(value, float):
             raise TypeError("Latitude must be a Float")
@@ -87,14 +48,7 @@ class Place(BaseModel):
             raise ValueError("Latitude must be between -90.0 and 90.0")
         self._latitude = value
 
-    @property
-    def longitude(self):
-        """
-        Check if the longitude is a float, non empty and exists
-        """
-        return self._longitude
-
-    @longitude.setter
+    @validates("longitude")
     def longitude(self, value):
         if not isinstance(value, float):
             raise TypeError("Longitude must be a Float")

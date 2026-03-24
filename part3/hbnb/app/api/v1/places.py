@@ -32,12 +32,12 @@ place_model = api.model('Place', {
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True,
-                             description='Latitude of the place'),
+                            description='Latitude of the place'),
     'longitude': fields.Float(required=True,
-                              description='Longitude of the place'),
+                            description='Longitude of the place'),
     'owner_id': fields.String(required=True, description='ID of the owner'),
     'amenities': fields.List(fields.String, required=True,
-                             description="List of amenities ID's"),
+                            description="List of amenities ID's"),
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
@@ -46,11 +46,11 @@ update_place_model = api.model('Place', {
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True,
-                             description='Latitude of the place'),
+                            description='Latitude of the place'),
     'longitude': fields.Float(required=True,
-                              description='Longitude of the place'),
+                            description='Longitude of the place'),
     'amenities': fields.List(fields.String, required=True,
-                             description="List of amenities ID's"),
+                            description="List of amenities ID's"),
     'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
@@ -92,10 +92,10 @@ class PlaceList(Resource):
         places = facade.get_all_places()
 
         return [{'id': place.id,
-                 'title': place.title,
-                 'latitude': place.latitude,
-                 'longitude': place.longitude
-                 }
+                'title': place.title,
+                'latitude': place.latitude,
+                'longitude': place.longitude
+                }
                 for place in places
                 ], 200
 

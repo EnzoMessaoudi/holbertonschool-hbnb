@@ -1,25 +1,53 @@
 from app.persistence.repository import InMemoryRepository
+from app.persistence.repository import SQLAlchemyRepository
+from app import db
 from app.models.user import User
-from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
+from app.models.amenity import Amenity
+
+class UserRepository(SQLAlchemyRepository):
+    def __init__(self):
+        super().__init__(User)
+
+    def get_user_by_email(self, email):
+        return self.model.query.filter_by(email=email).first()
+
+class PlaceRepository(SQLAlchemyRepository):
+    def __init__(self):
+        super().__init__(Place)
+
+    def get_place_by_id(self, place_id):
+        return self.model.query.get(place_id)
+
+class ReviewRepository(SQLAlchemyRepository):
+    def __init__(self):
+        super().__init__(Review)
+
+    def get_review_by_id(self, review_id):
+        return self.model.query.get(review_id)
+    
+class AmenityRepository(SQLAlchemyRepository):
+    def __init__(self):
+        super().__init__(Amenity)
+
+    def get_amenity_by_id(self, amenity_id):
+        return self.model.query.get(amenity_id)
 
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
+        self.user_repo = UserRepository()
+        self.place_repo = PlaceRepository()
+        self.amenity_repo = AmenityRepository()
+        self.review_repo = ReviewRepository()
 
     def create_user(self, user_data):
         user = User(**user_data)
         if not user:
             return None
         password = user_data.get('password')
-        user.password = user.hash_password(password)
-        if user.first_name == 'Admin':
-            user.is_admin = True
+        user.hash_password(user_data['password'])
         self.user_repo.add(user)
         return user
 
@@ -40,7 +68,7 @@ class HBnBFacade:
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
 
     def create_amenity(self, amenity_data):
         amenity = Amenity(**amenity_data)
