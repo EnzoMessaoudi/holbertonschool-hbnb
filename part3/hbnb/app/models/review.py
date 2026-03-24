@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from .basemodel import BaseModel
-from app.extensions import db, bcrypt
+from app.extensions import db
 from sqlalchemy.orm import validates
 
 
