@@ -1,22 +1,18 @@
 import uuid
 from datetime import datetime
 from .basemodel import BaseModel
+from app.extensions import db, bcrypt
+from sqlalchemy.orm import validates
 
 
 class Review(BaseModel):
-    def __init__(self, text, rating, place_id, user_id):
-        super().__init__()
-        self.text = text
-        self.rating = rating
-        self.place_id = place_id
-        self.user_id = user_id
+    __tablename__ = 'users'
 
-    @property
-    def text(self):
-        return self._text
+    text = db.Column(db.String, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
 
-    @text.setter
-    def text(self, value):
+    @validates("text")
+    def text(self, key, value):
         """
         Check if the text is a string and non empty
         """
@@ -26,12 +22,8 @@ class Review(BaseModel):
             raise ValueError("Text is required")
         self._text = value
 
-    @property
-    def rating(self):
-        return self._rating
-
-    @rating.setter
-    def rating(self, value):
+    @validates("rating")
+    def rating(self, key, value):
         """
         Check if the rating is an int between 1 or 5
         """
@@ -42,7 +34,7 @@ class Review(BaseModel):
         self._rating = value
 
     def to_dict(self):
-        data = super().to_dict()  # récupère id, created_at, updated_at
+        data = super().to_dict()
         data.update({
             "text": self.text,
             "rating": self.rating,
