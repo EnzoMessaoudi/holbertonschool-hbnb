@@ -6,21 +6,21 @@ from .basemodel import BaseModel
 
 #Adding a table for the many-to-many relationship between places and amenities
 place_amenities = db.Table('place_amenities',
-    db.Column('place_id', db.Integer, db.ForeignKey('amenities.id'), primary_key=True),
-    db.Column('amenity_id', db.Integer, db.ForeignKey('places.id'), primary_key=True)
+    db.Column('place_id', db.Integer, db.ForeignKey('places.id'), primary_key=True),
+    db.Column('amenity_id', db.Integer, db.ForeignKey('amenities.id'), primary_key=True)
 )
 
 class Place(BaseModel):
     __tablename__ = 'places'
 
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)
     price = db.Column(db.Float)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    reviews = db.relationship('reviews', backref='place', lazy=True)
-    amenitites = db.relationship('amenities', secondary=place_amenities, lazy='subquery', backref=db.backref('places', lazy=True))
+    reviews = db.relationship('Review', backref='place', lazy=True)
+    amenitites = db.relationship('Amenity', secondary=place_amenities, lazy='subquery', backref=db.backref('places', lazy=True))
 
     @validates("title")
     def validate_title(self, key, value):
