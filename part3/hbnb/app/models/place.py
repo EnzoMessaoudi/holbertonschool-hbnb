@@ -14,6 +14,7 @@ class Place(BaseModel):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    reviews = db.relationship('reviews', backref='place', lazy=True)
 
     @validates("title")
     def validate_title(self, key, value):
