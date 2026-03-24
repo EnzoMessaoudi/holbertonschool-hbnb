@@ -1,23 +1,17 @@
 import uuid
 from datetime import datetime
 from .basemodel import BaseModel
+from app.extensions import db
+from sqlalchemy.orm import validates
 
 
 class Amenity(BaseModel):
-    def __init__(self, name, places=None):
-        super().__init__()
-        self.name = name
-        self.places = []
+    __tablename__ = "amenities"
 
-    @property
-    def name(self):
-        """
-        Check if the name is a non empty string and is less than 50 chars
-        """
-        return self._name
+    name = db.Column(db.String(50), nullable=False)
 
-    @name.setter
-    def name(self, value):
+    @validates("name")
+    def name(self, key, value):
         if not isinstance(value, str):
             raise TypeError("Name must be a string")
         if value == "":
