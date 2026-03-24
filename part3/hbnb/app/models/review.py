@@ -10,9 +10,11 @@ class Review(BaseModel):
 
     text = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+    place_id = db.Column(db.Integer, db.ForeignKey('places.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     @validates("text")
-    def text(self, key, value):
+    def validate_text(self, key, value):
         """
         Check if the text is a string and non empty
         """
@@ -20,10 +22,10 @@ class Review(BaseModel):
             raise TypeError("Text must be a string")
         if value == "":
             raise ValueError("Text is required")
-        self._text = value
+        return value
 
     @validates("rating")
-    def rating(self, key, value):
+    def validate_rating(self, key, value):
         """
         Check if the rating is an int between 1 or 5
         """
@@ -31,7 +33,7 @@ class Review(BaseModel):
             raise TypeError("Rating must an integer")
         if not 1 <= value <= 5:
             raise ValueError("Rating must be an integer bewteen 1 and 5")
-        self._rating = value
+        return value
 
     def to_dict(self):
         data = super().to_dict()
