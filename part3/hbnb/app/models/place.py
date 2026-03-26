@@ -13,14 +13,14 @@ place_amenities = db.Table('place_amenities',
 class Place(BaseModel):
     __tablename__ = 'places'
 
-    title = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(255))
     description = db.Column(db.Text)
     price = db.Column(db.Float)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     reviews = db.relationship('Review', backref='place', lazy=True)
-    amenitites = db.relationship('Amenity', secondary=place_amenities, lazy='subquery', backref=db.backref('places', lazy=True))
+    amenities = db.relationship('Amenity', secondary=place_amenities, lazy='subquery', backref=db.backref('places', lazy=True))
 
     @validates("title")
     def validate_title(self, key, value):
@@ -31,6 +31,7 @@ class Place(BaseModel):
             raise ValueError("Title is required")
         if len(value) > 100:
             raise ValueError("Title must be under 100 Characters")
+        return value
 
     @validates("description")
     def validate_description(self, key, value):
@@ -39,7 +40,7 @@ class Place(BaseModel):
         return value
 
     @validates("price")
-    def validate_price(self, value):
+    def validate_price(self, key, value):
         if not isinstance(value, (float, int)):
             raise TypeError("Price must be a number")
         value = float(value)
@@ -48,7 +49,7 @@ class Place(BaseModel):
         return value
 
     @validates("latitude")
-    def validate_latitude(self, value):
+    def validate_latitude(self, key, value):
         if not isinstance(value, float):
             raise TypeError("Latitude must be a Float")
         if not (-90.0 <= value <= 90.0):
@@ -56,7 +57,7 @@ class Place(BaseModel):
         return value
 
     @validates("longitude")
-    def validate_longitude(self, value):
+    def validate_longitude(self, key, value):
         if not isinstance(value, float):
             raise TypeError("Longitude must be a Float")
         if not (-180.0 <= value <= 180.0):
