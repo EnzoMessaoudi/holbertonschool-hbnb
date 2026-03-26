@@ -135,7 +135,6 @@ class HBnBFacade:
         if not review:
             return None
         self.review_repo.add(review)
-        self.place_repo.add(review)
         return review
 
     def get_review(self, review_id):

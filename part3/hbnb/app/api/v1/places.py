@@ -27,7 +27,7 @@ review_model = api.model('PlaceReview', {
 })
 
 # Define the place model for input validation and documentation
-place_model = api.model('Place', {
+place_model = api.model('PlaceCreate', {
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
@@ -35,13 +35,11 @@ place_model = api.model('Place', {
                             description='Latitude of the place'),
     'longitude': fields.Float(required=True,
                             description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description='ID of the owner'),
     'amenities': fields.List(fields.String, required=True,
                             description="List of amenities ID's"),
-    'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
-update_place_model = api.model('Place', {
+update_place_model = api.model('PlaceUpdate', {
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
@@ -51,7 +49,6 @@ update_place_model = api.model('Place', {
                             description='Longitude of the place'),
     'amenities': fields.List(fields.String, required=True,
                             description="List of amenities ID's"),
-    'reviews': fields.List(fields.Nested(review_model), description='List of reviews')
 })
 
 
@@ -74,6 +71,7 @@ class PlaceList(Resource):
         if not place_data:
             return {"error": "Invalid input data"}, 400
 
+        place_data['user_id'] = current_user
         new_place = facade.create_place(place_data)
 
         return {'id': new_place.id,
@@ -82,7 +80,7 @@ class PlaceList(Resource):
                 'price': new_place.price,
                 'latitude': new_place.latitude,
                 'longitude': new_place.longitude,
-                'owner_id': new_place.owner_id
+                'owner_id': new_place.user_id
                 }, 201
 
     @api.response(200, 'List of places retrieved successfully')
@@ -109,7 +107,7 @@ class PlaceResource(Resource):
         """Get place details by ID"""
 
         place = facade.get_place(place_id)
-        owner = facade.get_user(place.owner_id)
+        owner = facade.get_user(place.user_id)
 
         if not place:
             return {'error': 'Place not found'}, 404
@@ -150,14 +148,14 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
 
-        if place.owner_id != current_user:
+        if place.user_id != current_user:
             return {'error': 'Unauthorized action'}, 403
 
         place_data = api.payload
         if not place_data:
             return {'error': 'Invalid input data'}, 400
 
-        place_data["owner_id"] = current_user
+        place_data["user_id"] = current_user
         updated_place = facade.update_place(place, place_data)
 
         return {"message": "Place updated successfully"}, 200
