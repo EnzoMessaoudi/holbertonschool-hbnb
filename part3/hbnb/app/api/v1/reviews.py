@@ -10,7 +10,6 @@ api = Namespace('reviews', description='Review operations')
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'user_id': fields.String(required=True, description='ID of the user'),
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
@@ -31,7 +30,7 @@ class ReviewList(Resource):
         place = facade.get_place(place_id)
         if not place:
             return {"error": "Place not found"}, 400
-        if place.owner_id == current_id:
+        if place.user_id == current_id:
             return {"error": "Cannot review your own place"}, 400
 
         all_reviews = facade.get_all_reviews()
@@ -125,6 +124,6 @@ class ReviewResource(Resource):
         if review.user_id != current_user:
             return {'error': 'Unauthorized action'}, 403
 
-        success = facade.delete_review(review)
+        success = facade.delete_review(review_id)
 
         return {"message": "Review deleted successfully"}, 200

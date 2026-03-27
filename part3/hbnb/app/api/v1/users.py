@@ -72,6 +72,14 @@ class AdminUserCreate(Resource):
             'email': new_user.email,
         }, 201
 
+    @api.response(200, 'List of users retrieved successfully')
+    def get(self):
+        """Retrieve a list of all users"""
+
+        users = facade.get_all_users()
+
+        return [{'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}
+                for user in users], 200
 
 @api.route('/<user_id>')
 class UserResource(Resource):
@@ -100,10 +108,11 @@ class UserResource(Resource):
         """Update user infos"""
         current_user = get_jwt()
         user = facade.get_user(user_id)
+        claims = get_jwt()
 
         if not user:
             return {'error': 'User not found'}, 404
-        if user_id != current_user:
+        if user_id != current_user and not claims.get('is_admin'):
             return {'error': 'Unauthorized action'}, 403
 
         user_data = api.payload
@@ -111,7 +120,7 @@ class UserResource(Resource):
         if not user_data:
             return {'error': 'Invalid input data'}, 400
 
-        if 'email' in user_data or 'password' in user_data:
+        if ('email' in user_data or 'password' in user_data) and not claims.get('is_admin'):
             return {'error': 'You cannot modify email or password'}, 400
         
         email = user_data.get('email')
@@ -122,6 +131,6 @@ class UserResource(Resource):
                 return {'error': 'Email is already in use'}, 400
 
         user_data["user_id"] = current_user
-        facade.update_user(user, user_data)
+        facade.update_user(user_id, user_data)
 
         return {"message": "User updated successfully !"}, 200
