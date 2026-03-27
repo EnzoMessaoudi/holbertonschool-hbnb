@@ -51,6 +51,9 @@ class HBnBFacade:
         self.user_repo.add(user)
         return user
 
+    def get_all_users(self):
+        return self.user_repo.get_all()
+
     def update_user(self, user_id, user_data):
         user = self.get_user(user_id)
 
@@ -129,6 +132,7 @@ class HBnBFacade:
         self.place_repo.update(place, place_data)
 
         return place
+    
 
     def create_review(self, review_data):
         review = Review(**review_data)
