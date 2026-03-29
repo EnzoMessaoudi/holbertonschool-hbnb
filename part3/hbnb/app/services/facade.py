@@ -133,6 +133,9 @@ class HBnBFacade:
 
         return place
     
+    def delete_place(self, place_id):
+        self.place_repo.delete(place_id)
+        return True
 
     def create_review(self, review_data):
         review = Review(**review_data)
