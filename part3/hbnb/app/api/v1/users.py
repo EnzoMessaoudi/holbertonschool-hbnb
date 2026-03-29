@@ -23,29 +23,6 @@ update_user_model = api.model('User Update', {
     'password': fields.String(required=False, description='[READ ONLY] Cannot be modified'),
 })
 
-
-@api.route('/register')
-class UserRegister(Resource):
-    @api.expect(user_model, validate=True)
-    def post(self):
-        """Create a user for anybody"""
-        user_data = api.payload
-        if not user_data:
-            return {"error": "Invalid input data"}, 400
-
-        email = user_data.get('email')
-        if facade.get_user_by_email(email):
-            return {'error': 'Email already registered'}, 400
-
-        new_user = facade.create_user(user_data)
-        return {
-            'id': new_user.id,
-            'first_name': new_user.first_name,
-            'last_name': new_user.last_name,
-            'email': new_user.email,
-            'is_admin': new_user.is_admin
-        }, 201
-
 @api.route('/')
 class AdminUserCreate(Resource):
     @api.expect(user_model, validate=True)
