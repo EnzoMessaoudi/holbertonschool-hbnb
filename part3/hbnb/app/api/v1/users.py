@@ -118,3 +118,22 @@ class UserResource(Resource):
         facade.update_user(user_id, user_data)
 
         return {"message": "User updated successfully !"}, 200
+
+    @api.response(200, 'User deleted successfully')
+    @api.response(404, 'User not found')
+    @jwt_required()
+    def delete(self, user_id):
+        """Delete a user"""
+        current_user = get_jwt_identity()
+        user = facade.get_user(user_id)
+        claims = get_jwt()
+
+        if not user:
+            return {"error": "User not found or invalid data"}, 404
+
+        if user.id != current_user and not claims.get('is_admin'):
+            return {'error': 'Unauthorized action'}, 403
+
+        success = facade.delete_user(user_id)
+
+        return {"message": "User deleted successfully"}, 200

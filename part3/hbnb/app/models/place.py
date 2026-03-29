@@ -19,7 +19,7 @@ class Place(BaseModel):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    reviews = db.relationship('Review', backref='place', lazy=True)
+    reviews = db.relationship('Review', backref='place', lazy=True, cascade='all, delete')
     amenities = db.relationship('Amenity', secondary=place_amenities, lazy='subquery', backref=db.backref('places', lazy=True))
 
     @validates("title")
