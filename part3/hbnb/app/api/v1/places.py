@@ -167,7 +167,7 @@ class PlaceResource(Resource):
     def delete(self, place_id):
         """Delete a place"""
         current_user = get_jwt_identity()
-        place = facade.get_review(place_id)
+        place = facade.get_place(place_id)
         claims = get_jwt()
 
         if not place:
