@@ -1,6 +1,5 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask import request
 
@@ -23,35 +22,17 @@ update_user_model = api.model('User Update', {
     'password': fields.String(required=False, description='[READ ONLY] Cannot be modified'),
 })
 
-
-@api.route('/register')
-class UserRegister(Resource):
-    @api.expect(user_model, validate=True)
-    def post(self):
-        """Create a user for anybody"""
-        user_data = api.payload
-        if not user_data:
-            return {"error": "Invalid input data"}, 400
-
-        email = user_data.get('email')
-        if facade.get_user_by_email(email):
-            return {'error': 'Email already registered'}, 400
-
-        new_user = facade.create_user(user_data)
-        return {
-            'id': new_user.id,
-            'first_name': new_user.first_name,
-            'last_name': new_user.last_name,
-            'email': new_user.email,
-            'is_admin': new_user.is_admin
-        }, 201
-
 @api.route('/')
 class AdminUserCreate(Resource):
     @api.expect(user_model, validate=True)
+    @api.response(201, 'User successfully created')
+    @api.response(400, 'Invalid input data')
+    @api.response(400, 'Email already registered')
+    @api.response(403, 'Admin privileges required')
     @jwt_required()
     def post(self):
         """Create a user passing by admin"""
+
         claims = get_jwt()
         if not claims.get('is_admin'):
             return {'error': 'Admin privileges required'}, 403
@@ -72,6 +53,7 @@ class AdminUserCreate(Resource):
             'email': new_user.email,
         }, 201
 
+
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
         """Retrieve a list of all users"""
@@ -80,6 +62,7 @@ class AdminUserCreate(Resource):
 
         return [{'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}
                 for user in users], 200
+
 
 @api.route('/<user_id>')
 class UserResource(Resource):
@@ -96,6 +79,7 @@ class UserResource(Resource):
                 'last_name': user.last_name,
                 'email': user.email
                 }, 200
+
 
     @api.expect(update_user_model, validate=True)
     @api.response(200, 'User updated successfully !')
@@ -134,3 +118,22 @@ class UserResource(Resource):
         facade.update_user(user_id, user_data)
 
         return {"message": "User updated successfully !"}, 200
+
+    @api.response(200, 'User deleted successfully')
+    @api.response(404, 'User not found')
+    @jwt_required()
+    def delete(self, user_id):
+        """Delete a user"""
+        current_user = get_jwt_identity()
+        user = facade.get_user(user_id)
+        claims = get_jwt()
+
+        if not user:
+            return {"error": "User not found or invalid data"}, 404
+
+        if user.id != current_user and not claims.get('is_admin'):
+            return {'error': 'Unauthorized action'}, 403
+
+        success = facade.delete_user(user_id)
+
+        return {"message": "User deleted successfully"}, 200

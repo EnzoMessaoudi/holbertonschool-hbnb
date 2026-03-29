@@ -12,7 +12,7 @@ class User(BaseModel):
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
-    places = db.relationship('Place', backref='user', lazy=True)
+    places = db.relationship('Place', backref='user', lazy=True, cascade='all, delete')
     reviews = db.relationship('Review', backref='user', lazy=True)
 
     @validates("first_name")
