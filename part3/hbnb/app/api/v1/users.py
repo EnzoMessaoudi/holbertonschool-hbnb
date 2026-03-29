@@ -1,6 +1,5 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
-from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask import request
 
@@ -26,9 +25,14 @@ update_user_model = api.model('User Update', {
 @api.route('/')
 class AdminUserCreate(Resource):
     @api.expect(user_model, validate=True)
+    @api.response(201, 'User successfully created')
+    @api.response(400, 'Invalid input data')
+    @api.response(400, 'Email already registered')
+    @api.response(403, 'Admin privileges required')
     @jwt_required()
     def post(self):
         """Create a user passing by admin"""
+
         claims = get_jwt()
         if not claims.get('is_admin'):
             return {'error': 'Admin privileges required'}, 403
@@ -49,6 +53,7 @@ class AdminUserCreate(Resource):
             'email': new_user.email,
         }, 201
 
+
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
         """Retrieve a list of all users"""
@@ -57,6 +62,7 @@ class AdminUserCreate(Resource):
 
         return [{'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}
                 for user in users], 200
+
 
 @api.route('/<user_id>')
 class UserResource(Resource):
@@ -73,6 +79,7 @@ class UserResource(Resource):
                 'last_name': user.last_name,
                 'email': user.email
                 }, 200
+
 
     @api.expect(update_user_model, validate=True)
     @api.response(200, 'User updated successfully !')
