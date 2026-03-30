@@ -58,9 +58,11 @@ class SQLAlchemyRepository(Repository):
     def get_all(self):
         return self.model.query.all()
 
-    def update(self, obj, data):
-        for key, value in data.items():
-            setattr(obj, key, value)
+    def update(self, obj_id, data):
+        obj = self.get(obj_id)
+        if obj:
+            for key, value in data.items():
+                setattr(obj, key, value)
             db.session.commit()
 
     def delete(self, obj_id):
