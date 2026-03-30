@@ -35,8 +35,6 @@ place_model = api.model('PlaceCreate', {
                             description='Latitude of the place'),
     'longitude': fields.Float(required=True,
                             description='Longitude of the place'),
-    'amenities': fields.List(fields.String, required=True,
-                            description="List of amenities ID's"),
 })
 
 update_place_model = api.model('PlaceUpdate', {
@@ -47,8 +45,6 @@ update_place_model = api.model('PlaceUpdate', {
                             description='Latitude of the place'),
     'longitude': fields.Float(required=True,
                             description='Longitude of the place'),
-    'amenities': fields.List(fields.String, required=True,
-                            description="List of amenities ID's"),
 })
 
 
