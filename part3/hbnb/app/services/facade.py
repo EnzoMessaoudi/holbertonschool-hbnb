@@ -5,6 +5,7 @@ from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
+import uuid
 
 class UserRepository(SQLAlchemyRepository):
     def __init__(self):
@@ -98,6 +99,26 @@ class HBnBFacade:
             setattr(amenity, key, value)
         self.amenity_repo.update(amenity, amenity_data)
         return amenity
+
+    def link_amenity_to_place(self, place_id, amenity_id):
+        place = Place.query.get(place_id)
+        if not place:
+            return False
+
+        try:
+            uuid_obj = uuid.UUID(amenity_id)
+        except ValueError:
+            return False
+
+        amenity = Amenity.query.get(amenity_id)
+        if not amenity:
+            return False
+
+        if amenity not in place.amenities:
+            place.amenities.append(amenity)
+            db.session.commit()
+        
+        return True
 
     def create_place(self, place_data):
 
