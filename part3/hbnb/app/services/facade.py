@@ -133,7 +133,7 @@ class HBnBFacade:
         for key, value in place_data.items():
             setattr(place, key, value)
 
-        self.place_repo.update(place, place_data)
+        self.place_repo.update(place_id, place_data)
 
         return place
     
