@@ -114,15 +114,9 @@ class PlaceResource(Resource):
                 'price': place.price,
                 'latitude': place.latitude,
                 'longitude': place.longitude,
-                'owner': {
-                    'id': owner.id,
-                    'first_name': owner.first_name,
-                    'last_name': owner.last_name,
-                    'email': owner.email
-                    },
+                'owner': f"{owner.first_name} {owner.last_name}",
                 'amenities': [
                     {
-                        'id': amenity.id,
                         'name': amenity.name
                     }
                     for amenity in place.amenities
