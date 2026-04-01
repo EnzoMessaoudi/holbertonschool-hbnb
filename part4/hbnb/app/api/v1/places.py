@@ -87,8 +87,8 @@ class PlaceList(Resource):
 
         return [{'id': place.id,
                 'title': place.title,
-                'latitude': place.latitude,
-                'longitude': place.longitude
+                'description': place.description,
+                'price': place.price,
                 }
                 for place in places
                 ], 200
