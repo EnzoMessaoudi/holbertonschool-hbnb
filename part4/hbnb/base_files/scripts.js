@@ -29,12 +29,12 @@ function displayPlaces(places) {
         div.innerHTML = `
             <h2>${place.title}</h2>
             <p>Price per night: $${place.price}</p>
-            <button class="view-details">View Details</button>
+            <button class="details-button">View Details</button>
         `;
 
         placesList.appendChild(div);
 
-        const button = div.querySelector(".view-details");
+        const button = div.querySelector(".details-button");
         button.addEventListener("click", () => {
             window.location.href = `place.html?id=${place.id}`;
         });
