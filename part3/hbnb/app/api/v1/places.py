@@ -103,10 +103,11 @@ class PlaceResource(Resource):
         """Get place details by ID"""
 
         place = facade.get_place(place_id)
-        owner = facade.get_user(place.user_id)
 
         if not place:
             return {'error': 'Place not found'}, 404
+
+        owner = facade.get_user(place.user_id)
 
         return {'id': place.id,
                 'title': place.title,
