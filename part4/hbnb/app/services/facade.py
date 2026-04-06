@@ -64,7 +64,7 @@ class HBnBFacade:
         for key, value in user_data.items():
             setattr(user, key, value)
 
-        self.user_repo.update(user, user_data)
+        self.user_repo.update(user_id, user_data)
 
         return user
 
