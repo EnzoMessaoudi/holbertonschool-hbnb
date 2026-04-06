@@ -33,6 +33,10 @@ class AdminUserCreate(Resource):
     def post(self):
         """Create a user passing by admin"""
 
+        try:
+            new_user = facade.create_user(user_data)
+        except Exception as e:
+            print(e)
         claims = get_jwt()
         if not claims.get('is_admin'):
             return {'error': 'Admin privileges required'}, 403
@@ -45,7 +49,7 @@ class AdminUserCreate(Resource):
         if facade.get_user_by_email(email):
             return {'error': 'Email already registered'}, 400
 
-        new_user = facade.create_user(user_data)
+            
         return {
             'id': new_user.id,
             'first_name': new_user.first_name,
