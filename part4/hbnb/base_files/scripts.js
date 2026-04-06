@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     fetchPlaces();
     setupPriceFilter();
+    setupLogin();
 });
 
 let allPlaces = [];
@@ -20,6 +21,9 @@ function fetchPlaces() {
 // Show all the places created in the database
 function displayPlaces(places) {
     const placesList = document.getElementById("places-list");
+
+    if (!placesList) return; // stop if element doesn't exist
+
     placesList.innerHTML = "";
 
     places.forEach(place => {
@@ -44,6 +48,8 @@ function displayPlaces(places) {
 // Fetch the prices of all the places
 function populatePriceFilter(places) {
     const priceFilter = document.getElementById("price-filter");
+    if (!priceFilter) return;
+
     priceFilter.innerHTML = `<option value="">All</option>`;
 
     const prices = [...new Set(places.map(p => p.price))].sort((a, b) => a - b);
@@ -59,6 +65,7 @@ function populatePriceFilter(places) {
 // Order the places with the max price we want
 function setupPriceFilter() {
     const priceFilter = document.getElementById("price-filter");
+    if (!priceFilter) return;
     priceFilter.addEventListener("change", () => {
         const maxPrice = priceFilter.value ? parseFloat(priceFilter.value) : null;
 
@@ -69,5 +76,38 @@ function setupPriceFilter() {
         }
 
         displayPlaces(filteredPlaces);
+    });
+}
+
+function setupLogin() {
+    const loginForm = document.getElementById('login-form');
+    if (!loginForm) return;
+
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/v1/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.cookie = `token=${data.access_token}; path=/`;
+                window.location.href = 'index.html';
+            } else {
+                const errorData = await response.json();
+                alert('Login failed: ' + (errorData.message || response.statusText));
+            }
+
+        } catch (error) {
+            console.error('Login request failed', error);
+            alert('An error occurred while logging in.');
+        }
     });
 }
