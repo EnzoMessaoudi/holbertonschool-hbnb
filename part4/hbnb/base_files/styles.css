@@ -1,3 +1,5 @@
+/** Styles for all the places */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -36,15 +38,33 @@ main {
     padding: 2rem;
 }
 
+footer {
+    background-color: rgb(255, 145, 0);
+    color: #fff;
+    position: fixed;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    padding: 1rem;
+}
+
+footer p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .page-container {
-    max-width: 1000px;   /* controls page width */
-    margin: 0 auto;      /* centers horizontally */
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 20px;
 
     display: flex;
     flex-direction: column;
-    gap: 30px;           /* equal spacing between ALL sections */
+    gap: 30px;
 }
+
+/** Index.html */
 
 .available {
     text-align: center;
@@ -59,6 +79,7 @@ main {
 
 #price-filter {
     font-size: 20px;
+    border-radius: 5px;
 }
 
 .places-list {
@@ -101,18 +122,20 @@ main {
     border: none;
 }
 
-footer {
-    background-color: rgb(255, 145, 0);
-    color: #fff;
-    position: fixed;
-    bottom: 0%;
-    left: 0%;
-    right: 0%;
-    padding: 1rem;
-}
+/** login.html*/
 
-footer p {
+#login-form {
+    background-color: rgba(255, 255, 255, 0.473);
+    border-radius: 10px;
+    border: 1px solid black;
+    margin: auto;
+    padding: 16%;
+
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    text-align: center;
     align-items: center;
+    justify-content: space-between;
+
+    position: relative;
 }
