@@ -151,6 +151,7 @@ class PlaceResource(Resource):
 
         return {"message": "Place updated successfully"}, 200
 
+
     @api.response(200, 'Place deleted successfully')
     @api.response(404, 'Place not found')
     @jwt_required()
