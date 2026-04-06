@@ -1,30 +1,8 @@
-/* 
-This is a SAMPLE File to get you started. Follow the instructions on the project to complete the tasks. 
-You'll probably need to override some of theese styles.
-*/
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-}
-
-body {
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
-}
-
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
 }
 
 nav a {
@@ -33,6 +11,108 @@ nav a {
     margin-left: 1rem;
 }
 
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    position: relative;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(255, 145, 0);
+    color: #fff;
+    padding: 1rem;
+}
+
+.login-button {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+}
+
 main {
     padding: 2rem;
+}
+
+.page-container {
+    max-width: 1000px;   /* controls page width */
+    margin: 0 auto;      /* centers horizontally */
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;           /* equal spacing between ALL sections */
+}
+
+.available {
+    text-align: center;
+    font-size: 40px;
+    size: 90px;
+}
+
+#filter {
+    text-align: center;
+    font-size: 25px;
+}
+
+#price-filter {
+    font-size: 20px;
+}
+
+.places-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+#places-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    justify-content: center;
+}
+
+.place-card {
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+
+    min-height: 250px;
+    width: 350px;
+    background-color: rgba(255, 255, 255, 0.473);
+
+    position: relative;
+}
+
+.place-card .details-button {
+    color: white;
+    background-color: rgb(255, 145, 0);
+    font-size: large;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+footer {
+    background-color: rgb(255, 145, 0);
+    color: #fff;
+    position: fixed;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    padding: 1rem;
+}
+
+footer p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
