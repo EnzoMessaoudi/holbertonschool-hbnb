@@ -100,6 +100,7 @@ function setupLogin() {
                 const data = await response.json();
                 document.cookie = `token=${data.access_token}; path=/`;
                 window.location.href = 'index.html';
+                alert('Welcome !');
             } else {
                 const errorData = await response.json();
                 alert('Login failed: ' + (errorData.message || response.statusText));
