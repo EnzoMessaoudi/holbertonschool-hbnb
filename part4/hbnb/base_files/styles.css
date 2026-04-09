@@ -35,13 +35,14 @@ header {
 }
 
 main {
-    padding: 2rem;
+    padding: 4rem;
+    margin: 1rem;
 }
 
 footer {
     background-color: rgb(255, 145, 0);
     color: #fff;
-    position: fixed;
+    position: relative;
     bottom: 0%;
     left: 0%;
     right: 0%;
@@ -55,7 +56,6 @@ footer p {
 }
 
 .page-container {
-    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
 
