@@ -29,6 +29,11 @@ function setupLogin() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
+        if (!email || !password) {
+            alert("Email and password are required");
+            return;
+        }
+
         try {
             const response = await fetch('http://127.0.0.1:5000/api/v1/auth/login', {
                 method: 'POST',
@@ -88,7 +93,6 @@ function checkAuthentication() {
         if (addReviewLink) {
             addReviewLink.style.display = 'none';
         }
-        alert("You have to be connect to see all the places !");
     } else {
         if (loginLink) loginLink.style.display = 'none';
         // Fetch places data if the user is authenticated
@@ -251,22 +255,7 @@ async function submitReview(token, placeId, reviewText, rating) {
             })
         });
 
-        const data = await response.json().catch(() => null);
-
-        if (response.ok) {
-            alert("Review ajoutée avec succès !");
-            fetchPlaceDetails(token, placeId);
-        } else {
-            console.log("Backend response:", data);
-
-            const errorMessage =
-                data?.error ||
-                data?.message ||
-                data?.detail ||
-                "Unknown error";
-
-            alert("Erreur : " + errorMessage);
-        }
+        handleResponse(response, token, placeId);
 
     } catch (error) {
         console.error("Error submitting review:", error);
@@ -274,15 +263,25 @@ async function submitReview(token, placeId, reviewText, rating) {
     }
 }
 
-function handleResponse(response) {
-    if (response.ok) {
-        alert('Review submitted successfully!');
+async function handleResponse(response, token, placeId) {
+    const data = await response.json().catch(() => null);
 
-        // Clear the form
+    if (response.ok) {
+        alert("Review submitted successfully!");
+
         document.getElementById("review-form").reset();
 
+        // refresh page data
+        fetchPlaceDetails(token, placeId);
+
     } else {
-        alert('Failed to submit review');
+        const errorMessage =
+            data?.error ||
+            data?.message ||
+            data?.detail ||
+            "Unknown error";
+
+        alert("Error: " + errorMessage);
     }
 }
 
@@ -303,6 +302,16 @@ function setupReviewForm() {
 
         const reviewText = document.getElementById('review').value;
         const rating = parseInt(document.getElementById('rating').value);
+
+        if (!reviewText || reviewText.trim() === "") {
+            alert("Review cannot be empty");
+            return;
+        }
+
+        if (isNaN(rating) || rating < 1 || rating > 5) {
+            alert("Rating must be between 1 and 5");
+            return;
+        }
 
         submitReview(token, placeId, reviewText, rating);
     });
