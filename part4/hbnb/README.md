@@ -16,9 +16,13 @@
 3- If there is an error, il will appears at the top of the screen. Otherwise, you are register !
 
 # How to add a review on a place ?
-1- Go on the place you want to review. On this page, you'll see all the infos about it and the reviews.
-2- If you are authentified, at the bottom of the page, a button add review will appear. Click on it.
-3- In the next page, you can write a text and put a review, between 1 and 5.
-4- Click on "Submit Review" to submit your review. If everything's good, it will now appears on the place !
+1- Go on the place you want to review. On this page, you'll see all the infos about it and the reviews.  
+
+2- If you are authentified, at the bottom of the page, a button add review will appear. Click on it.  
+
+3- In the next page, you can write a text and put a review, between 1 and 5.  
+
+4- Click on "Submit Review" to submit your review. If everything's good, it will now appears on the place !  
+
 
 Made by Enzo Messaoudi
