@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Setup review form
     setupReviewForm();
 });
 
@@ -95,6 +94,7 @@ function checkAuthentication() {
     return token;
 }
 
+// Fetch the cookie from the identified user
 function getCookie(name) {
     const cookies = document.cookie.split(';');
 
@@ -164,6 +164,7 @@ function getPlaceIdFromURL() {
     return id;
 }
 
+// Fecth the details of a place from the python code
 async function fetchPlaceDetails(token, placeId) {
     try {
         const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`, {
@@ -188,6 +189,7 @@ async function fetchPlaceDetails(token, placeId) {
     }
 }
 
+// Function used to display all the info about a place
 function displayPlaceDetails(place) {
     // Clear the current content of the place details section
     const placeDetails = document.getElementById("place-details");
@@ -212,15 +214,17 @@ function displayPlaceDetails(place) {
 
     placeDetails.innerHTML = `
         <div class ="place-details">
-            <h2>${place.title}</h2>
-            <p>${place.description}</p>
-            <p>Price per night: $${place.price}</p>
-            <p>Amenities: ${amenities}</p>
+            <h1>${place.title}</h1>
+            <p><strong> Host: </strong> ${place.owner}</p>
+            <p><strong>Price per night:</strong> $${place.price}</p>
+            <p><strong>Description:</strong>${place.description}</p>
+            <p><strong>Amenities:</strong> ${amenities}</p>
         </div>
     `;
     displayReviews(place);
 }
 
+// Function used to submit the review that a user write
 async function submitReview(token, placeId, reviewText, rating) {
     try {
         const response = await fetch("http://127.0.0.1:5000/api/v1/reviews/", {
@@ -236,22 +240,26 @@ async function submitReview(token, placeId, reviewText, rating) {
             })
         });
 
+        const data = await response.json().catch(() => null);
+
         if (response.ok) {
             alert("Review ajoutée avec succès !");
+            fetchPlaceDetails(token, placeId);
         } else {
-            const errorData = await response.json();
-            console.log(errorData);
-            alert("Erreur : " + errorData.error);
-        }
-        if (response.ok) {
-        alert("Review ajoutée avec succès !");
+            console.log("Backend response:", data);
 
-        // refresh reviews
-        fetchPlaceDetails(token, placeId);
-    }
+            const errorMessage =
+                data?.error ||
+                data?.message ||
+                data?.detail ||
+                "Unknown error";
+
+            alert("Erreur : " + errorMessage);
+        }
 
     } catch (error) {
         console.error("Error submitting review:", error);
+        alert("Network or server error");
     }
 }
 
@@ -273,7 +281,6 @@ function setupReviewForm() {
 
     const token = getCookie('token');
     const placeId = getPlaceIdFromURL();
-    console.log("PLACE ID:", placeId);
 
     reviewForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -290,6 +297,7 @@ function setupReviewForm() {
     });
 }
 
+// Display reviews inside of the place details
 function displayReviews(place) {
     const reviewsContainer = document.getElementById("reviews");
     if (!reviewsContainer) return;
@@ -298,7 +306,7 @@ function displayReviews(place) {
 
     if (place.reviews && place.reviews.length > 0) {
         reviewsHTML = place.reviews.map(r => `
-            <div class="review">
+            <div class="review-card">
                 <p><strong>User:</strong> ${r.user.first_name} ${r.user.last_name}</p>
                 <p>Rating: ${"⭐".repeat(r.rating)}</p>
                 <p>${r.text}</p>
