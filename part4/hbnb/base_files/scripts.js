@@ -210,27 +210,15 @@ function displayPlaceDetails(place) {
         amenities = place.amenities.map(a => a.name).join(', ');
     }
 
-let reviewsHTML = "<p>No reviews yet.</p>";
-
-if (place.reviews && place.reviews.length > 0) {
-    reviewsHTML = place.reviews.map(r => `
-        <div class="review">
-            <p><strong>User:</strong> ${r.user.first_name} ${r.user.last_name}</p>
-            <p>Rating: ${"⭐".repeat(r.rating)}</p>
-            <p>${r.text}</p>
-        </div>
-    `).join('');
-}
-
     placeDetails.innerHTML = `
         <div class ="place-details">
             <h2>${place.title}</h2>
             <p>${place.description}</p>
             <p>Price per night: $${place.price}</p>
             <p>Amenities: ${amenities}</p>
-            <p>reviews: ${reviewsHTML}</p>
         </div>
     `;
+    displayReviews(place);
 }
 
 async function submitReview(token, placeId, reviewText, rating) {
@@ -255,6 +243,12 @@ async function submitReview(token, placeId, reviewText, rating) {
             console.log(errorData);
             alert("Erreur : " + errorData.error);
         }
+        if (response.ok) {
+        alert("Review ajoutée avec succès !");
+
+        // refresh reviews
+        fetchPlaceDetails(token, placeId);
+    }
 
     } catch (error) {
         console.error("Error submitting review:", error);
@@ -294,4 +288,26 @@ function setupReviewForm() {
 
         submitReview(token, placeId, reviewText, rating);
     });
+}
+
+function displayReviews(place) {
+    const reviewsContainer = document.getElementById("reviews");
+    if (!reviewsContainer) return;
+
+    let reviewsHTML = "<p>No reviews yet.</p>";
+
+    if (place.reviews && place.reviews.length > 0) {
+        reviewsHTML = place.reviews.map(r => `
+            <div class="review">
+                <p><strong>User:</strong> ${r.user.first_name} ${r.user.last_name}</p>
+                <p>Rating: ${"⭐".repeat(r.rating)}</p>
+                <p>${r.text}</p>
+            </div>
+        `).join('');
+    }
+
+    reviewsContainer.innerHTML = `
+        <h3>Reviews</h3>
+        ${reviewsHTML}
+    `;
 }
