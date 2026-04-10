@@ -1,8 +1,10 @@
-                                                        # HOLBERTON School Hbnb Part4
+<h1 align="center">Nom du projet</h1>
 
+<p align="center">
 In this phase, you'll be focusing on the front-end development of your application using HTML5, CSS3, and JavaScript ES6.
 Your task is to design and implement an interactive user interface that connects with the back-end services
 you have developed in previous parts of the project.
+</p>
 
 
 ## How to login in my HBnb ?
