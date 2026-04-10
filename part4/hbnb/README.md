@@ -1,90 +1,20 @@
-                                                            HOLBERTON School Hbnb Part2
+                                                            HOLBERTON School Hbnb Part4
 
-                            This project aims to reproduce the core features of airbnb by buildind a structured backend APi
-                            using Flask.
-
+                            In this phase, you'll be focusing on the front-end development of your application using HTML5, CSS3, and JavaScript ES6. Your task is to design and implement an interactive user interface that connects with the back-end services you have developed in previous parts of the project.
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Project Setup (task00)
-
-
-<img width="238" height="159" alt="Projet hbnb1 " src="https://github.com/user-attachments/assets/6b23f481-3fc5-467e-92f4-bbe3bd928592" />
-
-api/ : Main folder containing everything related to application's routes.
-
-__init__.py : Makes the folder a python module and initializes the application.
-
-v1/ :
-
-user.py : Contains routers related to users.
-
-places.py : Contains routes related to places properties/listings.
-
-reviews.py : Contains routes related to reviews.
-
-amenities.py : Contains routes related to amenities wifi, pool, etc.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-<img width="188" height="120" alt="Projet hbnb2 " src="https://github.com/user-attachments/assets/8242b6f2-a39a-4f93-a480-a35caf2dd1dd" />
+# How to login in my HBnb ?
+1- Click on the login at the top-right of the screen. You will be redirected on login page.
+2- Here, register yourself with your email and password
+3- If there is an error, il will appears at the top of the screen. Otherwise, you are register !
 
-models/ : This folder contains data models.
+# How to add a review on a place ?
+1- Go on the place you want to review. On this page, you'll see all the infos about it and the reviews.
+2- If you are authentified, at the bottom of the page, a button add review will appear. Click on it.
+3- In the next page, you can write a text and put a review, between 1 and 5.
+4- Click on "Submit Review" to submit your review. If everything's good, it will now appears on the place !
 
-__init__.py : Makes the folder a python module and initializes the application.
-
-user.py : Defines the user class.
-
-place.py : Defines the place class.
-
-review.py : Defines the review class
-
-amenity.py : Defines the amenity class.
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-<img width="185" height="58" alt="Projet hbnb3 " src="https://github.com/user-attachments/assets/33a737d2-6cb9-479a-80e0-031e1f756c4f" />
-
-services/ : Contains the logic for files.
-
-__init__.py : Makes the folder a python module and initializes the application.
-
-facade.py : The facade controls how the application works behind the scenes.
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-<img width="202" height="62" alt="Projet hbnb4 " src="https://github.com/user-attachments/assets/c1782baa-aa1b-43f9-9a90-dfc7352a06ed" />
-
-persistence/ : Saving and retrieving data from storage.
-
-__init__.py : Makes the folder a python module and initializes the application.
-
-repository.py : The file that handles communication with the database.
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-<img width="170" height="87" alt="Projet hbnb5 " src="https://github.com/user-attachments/assets/3a5bb45a-22a4-4f18-beff-da9e7f78346f" />
-
-run.py : The file you run to start the server.
-
-config.py : File contains the application configuration.
-
-requirements.txt : Files list all python dependencies needed to run the project.
-
-readme.md : Documentation file for the project
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-# Buisness Logic Layer (task 01)
-
-Like said previously, the Buisness logic layer is where the requests are tested, to check if they can be accept to change or see the database, it respect the buisness rules.   
-In the Buisness Logic Layer of our HBnb project, we have four entities: the user, the places, the amenities and the reviews. Each of these entites have their own role.   
-They have 3 attributes in common: a UUId (Universal Unique Identity), a creation date and an update date.
-
-First, the User entity. This entity is use to respect how an user profile is supposed to be. It can create a place.   
-Then, the Place entity, used to respect how the user is supposed to create a place. It can be update, delete, see. It can also see the review and the aminities on this place.
-Next, we have the review entity
-Finally, the amenity entity.
-
-
-Made by Killian Le boulzec and Enzo Messaoudi
+Made by Enzo Messaoudi
