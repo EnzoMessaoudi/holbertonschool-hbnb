@@ -1,4 +1,4 @@
-<h1 align="center">Nom du projet</h1>
+<h1 align="center">HOLBERTON School Hbnb Part4</h1>
 
 <p align="center">
 In this phase, you'll be focusing on the front-end development of your application using HTML5, CSS3, and JavaScript ES6.
