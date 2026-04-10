@@ -123,6 +123,19 @@ class PlaceResource(Resource):
                         'name': amenity.name
                     }
                     for amenity in place.amenities
+                ],
+                'reviews': [
+                    {
+                        'id': r.id,
+                        'text': r.text,
+                        'rating': r.rating,
+                        'user': {
+                            'id': r.user.id,
+                            'first_name': r.user.first_name,
+                            'last_name': r.user.last_name
+                        }
+                    }
+                    for r in place.reviews
                 ]
                 }, 200
 

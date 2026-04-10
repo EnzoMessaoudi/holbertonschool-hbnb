@@ -10,7 +10,7 @@
 <body>
     <header>
         <a href="index.html">
-            <img src="images/logo.png" class="logo" href="index.html">
+            <img src="images/logo.png" class="logo">
         </a>
         <nav>
             <a href="login.html" id="login-link" class="login-button">Login</a>
@@ -24,7 +24,12 @@
             <textarea id="review" name="review" required></textarea>
             <label for="rating">Rating:</label>
             <select id="rating" name="rating" required>
-                <!-- Options for rating -->
+                <option value="">Select rating</option>
+                <option value="1">1 ⭐</option>
+                <option value="2">2 ⭐⭐</option>
+                <option value="3">3 ⭐⭐⭐</option>
+                <option value="4">4 ⭐⭐⭐⭐</option>
+                <option value="5">5 ⭐⭐⭐⭐⭐</option>
             </select>
             <button type="submit">Submit Review</button>
         </form>
