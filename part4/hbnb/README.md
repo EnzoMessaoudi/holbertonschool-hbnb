@@ -6,6 +6,18 @@ Your task is to design and implement an interactive user interface that connects
 you have developed in previous parts of the project.
 </p>
 
+## Launch the app locally
+You have to launch with the command:  
+python3 run.py  
+
+Now, you can open the index.html with anything you want, live server for example, and see all the pages.
+
+## How does my HBnb works ?
+It's a real simple copy of an airbnb site. You have to login to see all the places (see below how to login). On the main page, you can see all the place that can be rent, with their price.  
+If you want to see the details of a place, you can click on the button "view details".  
+It will display all the infos on a place, like his owner, the description and his reviews.  
+If you want to add a review, you can see my guide below :).
+
 
 ## How to login in my HBnb ?
 1- Click on the login at the top-right of the screen. You will be redirected on login page.  
