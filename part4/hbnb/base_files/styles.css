@@ -1,4 +1,4 @@
-/** Styles for all the places */
+/** Styles for all the pages */
 
 * {
     box-sizing: border-box;
@@ -138,17 +138,47 @@ footer p {
 /** login.html*/
 
 #login-form {
-    background-color: rgba(255, 255, 255, 0.473);
-    border-radius: 10px;
-    border: 1px solid black;
-    margin: auto;
-    padding: 16%;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    width: 350px;
+    margin: 80px auto;
+    padding: 30px;
 
     display: flex;
     flex-direction: column;
-    text-align: center;
     align-items: center;
-    justify-content: space-between;
+    gap: 15px;
 
-    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+#login-form input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+#login-form input:focus {
+    border-color: rgb(255, 145, 0);
+    box-shadow: 0 0 5px rgba(255, 145, 0, 0.4);
+}
+
+#login-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: rgb(255, 145, 0);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#login-form button:hover {
+    background-color: rgb(230, 130, 0);
 }
