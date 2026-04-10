@@ -55,10 +55,12 @@ function setupLogin() {
 
 // Fetch the places from the Python code
 async function fetchPlaces(token) {
+    // Make a GET request to fetch places data
     try {
         const response = await fetch("http://127.0.0.1:5000/api/v1/places/", {
             method: "GET",
             headers: {
+                // Include the token in the Authorization header
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
@@ -66,6 +68,7 @@ async function fetchPlaces(token) {
 
         const data = await response.json();
 
+        // Handle the response and pass the data to displayPlaces function
         allPlaces = data;
         displayPlaces(data);
 
@@ -82,12 +85,13 @@ function checkAuthentication() {
 
     if (!token) {
         if (loginLink) loginLink.style.display = 'block';
-        fetchPlaces()
         if (addReviewLink) {
             addReviewLink.style.display = 'none';
         }
+        alert("You have to be connect to see all the places !");
     } else {
         if (loginLink) loginLink.style.display = 'none';
+        // Fetch places data if the user is authenticated
         fetchPlaces(token);
     }
 
@@ -115,18 +119,21 @@ function displayPlaces(places, selectedPrice) {
 
     if (!placesList) return;
 
+    // Clear the current content of the places list
     placesList.innerHTML = "";
 
+    // Iterate over the places data
     places.forEach(place => {
         const div = document.createElement("div");
         div.classList.add("place-card");
 
+        // For each place, create a div element and set its content
         div.innerHTML = `
             <h2>${place.title}</h2>
             <p>Price per night: $${place.price}</p>
             <button class="details-button">View Details</button>
         `;
-
+        // Append the created element to the places list
         placesList.appendChild(div);
 
         const button = div.querySelector(".details-button");
@@ -141,6 +148,7 @@ function setupPriceFilter() {
     const priceFilter = document.getElementById("price-filter");
     if (!priceFilter) return;
 
+    // Get the selected price value
     priceFilter.innerHTML = `
         <option value="">All</option>
         <option value="10">$10</option>
@@ -148,6 +156,7 @@ function setupPriceFilter() {
         <option value="100">$100</option>
     `;
 
+    // Iterate over the places and show/hide them based on the selected price
     priceFilter.addEventListener("change", () => {
         const maxPrice = priceFilter.value ? parseFloat(priceFilter.value) : null;
         const filteredPlaces = maxPrice
@@ -167,9 +176,11 @@ function getPlaceIdFromURL() {
 // Fecth the details of a place from the python code
 async function fetchPlaceDetails(token, placeId) {
     try {
+        // Make a GET request to fetch place details
         const response = await fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`, {
             method: "GET",
             headers: {
+                // Include the token in the Authorization header
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
@@ -177,11 +188,11 @@ async function fetchPlaceDetails(token, placeId) {
         const data = await response.json();
         const placeDetails = document.getElementById("place-details");
 
+        // Handle the response and pass the data to displayPlaceDetails function
         if (!data) {
             placeDetails.innerHTML = "<p>Place not found.</p>";
             return;
 }
-
         displayPlaceDetails(data);
 
     } catch (error) {
