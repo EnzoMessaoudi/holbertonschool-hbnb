@@ -9,8 +9,10 @@
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # How to login in my HBnb ?
-1- Click on the login at the top-right of the screen. You will be redirected on login page.
-2- Here, register yourself with your email and password
+1- Click on the login at the top-right of the screen. You will be redirected on login page.  
+
+2- Here, register yourself with your email and password  
+
 3- If there is an error, il will appears at the top of the screen. Otherwise, you are register !
 
 # How to add a review on a place ?
