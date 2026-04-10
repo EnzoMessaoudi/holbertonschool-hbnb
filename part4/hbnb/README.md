@@ -5,9 +5,6 @@
                             you have developed in previous parts of the project.
 
 
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 # How to login in my HBnb ?
 1- Click on the login at the top-right of the screen. You will be redirected on login page.  
 
