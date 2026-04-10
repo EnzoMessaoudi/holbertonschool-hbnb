@@ -24,4 +24,4 @@ you have developed in previous parts of the project.
 4- Click on "Submit Review" to submit your review. If everything's good, it will now appears on the place !  
 
 
-Made by Enzo Messaoudi
+<p><strong>Made by Enzo Messaoudi</strong></p>
