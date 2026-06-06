@@ -64,7 +64,7 @@ class HBnBFacade:
         for key, value in user_data.items():
             setattr(user, key, value)
 
-        self.user_repo.update(user, user_data)
+        self.user_repo.update(user_id, user_data)
 
         return user
 
@@ -97,7 +97,7 @@ class HBnBFacade:
             return None
         for key, value in amenity_data.items():
             setattr(amenity, key, value)
-        self.amenity_repo.update(amenity, amenity_data)
+        self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
 
     def link_amenity_to_place(self, place_id, amenity_id):
